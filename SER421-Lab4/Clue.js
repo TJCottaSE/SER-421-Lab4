@@ -5,9 +5,9 @@
  * Last Modified 11/9/17
  */
 
-var suspects = ['Jim', 'Jon', 'Lisa', 'Tom', 'Lance', 'Tina', 'Maxwell'];
-var weapons = ['knife', 'gun', 'candlestick', 'spoon', 'rope'];
-var rooms = ['study', 'kitchen', 'dining room', 'lavatory', 'sun room'];
+var suspects = ['Dr. Black', 'Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum'];
+var weapons = ['Candlestick', 'Dagger', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench'];
+var rooms = ['Kitchen', 'Ballroom', 'Conservatory', 'Billiard Room', 'Library', 'Study', 'Hall', 'Lounge', 'Dining Room'];
 var solution = [/* Suspect, Weapon, Room */];
 
 // Welcome the user
