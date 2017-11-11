@@ -23,11 +23,6 @@
     <th>Weapon</th>
   </tr>
   <tr bgcolor="#ffffff">
-    <td>Dr. Black</td>
-    <td>Candlestick</td>
-    <td>Kitchen</td>
-  </tr>
-  <tr bgcolor="#ffffff">
     <td>Miss Scarlet</td>
     <td>Dagger</td>
     <td>Ballroom</td>
@@ -103,10 +98,15 @@ Name: <input type='text' name='userName'></br>
              populateRooms();
           </script>
         </select>
-        <input type="submit" id="myGuesses" value="Player Guesses">
+<!--        <input type="submit" id="myGuesses" value="Player Guesses"> -->
     </form>
+    <button onclick="checkGuess()">Submit</button>
 </p>
 
+
+<div id='guessHistory'><!-- Guess History dynamically added here --></div>
+</br>
+<div id='result'><!-- Win declaration dynamically added here --></div>
 
 </body>
 </html>

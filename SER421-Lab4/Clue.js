@@ -5,7 +5,7 @@
  * Last Modified 11/9/17
  */
 
-var suspects = ['Dr. Black', 'Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum'];
+var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum'];
 var weapons = ['Candlestick', 'Dagger', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench'];
 var rooms = ['Kitchen', 'Ballroom', 'Conservatory', 'Billiard Room', 'Library', 'Study', 'Hall', 'Lounge', 'Dining Room'];
 var playerCards = [];
@@ -90,6 +90,45 @@ function dealCards(cards){
 }
 
 /*
+* This function pulls data from the guesses form and checks 
+* to see if the user has made a winning guess. Then depneding
+* on if the guess was correct or not updates the dom to reflect
+* a win condidiont, or reveals one characteristic of the 
+* guess that is incorrect. 
+*/
+function checkGuess(){
+	// Get data from form
+	var x = document.forms['guesses'];
+	var suspect = x.elements[0].value;
+	var weapon = x.elements[1].value;
+	var room = x.elements[2].value;
+	// Show guess
+	var node = document.createElement('p'); 
+	var textnode = document.createTextNode('Proposed: ' + 
+		suspect + ' killed Dr. Black with a ' + weapon + ' in the ' + room +'.');
+	node.appendChild(textnode);
+	document.getElementById('guessHistory').appendChild(node);
+	// Check for winning solution
+	if (solution.includes(suspect) && 
+		solution.includes(weapon) &&
+		solution.includes(room)){
+			document.getElementById('result').innerHTML = 'Winner!!!!! That was the correct guess.';
+		}
+	// Display one wrong part of the guess
+	else { 
+		if (!solution.includes(suspect)){
+			document.getElementById('result').innerHTML = suspect + ' is NOT the killer.';
+		}
+		else if (!solution.includes(weapon)){
+			document.getElementById('result').innerHTML = weapon + ' is NOT the murder weapon.';
+		}
+		else {
+			document.getElementById('result').innerHTML = room + ' is NOT where the murder took place.';
+		}	
+	}
+}
+
+/*
 * Creates the list of cards able to be 
 shown on the list for display
 ****STILL NEED TO CREATE PLAYER HAND!!
@@ -153,12 +192,18 @@ console.log('Playable Rooms: ' + playableRooms);
 // Test Dealing cards
 var remainingCards = playableSuspects.concat(playableRooms, playableWeapons);
 console.log('All cards shuffled: ' + remainingCards);
+
+
 // Shuffle and deal the remaining cards
 var deltCards = dealCards(shuffle(remainingCards));
 playerCards = deltCards[0];
 computerCards = deltCards[1];
+// ^^ This is business logic and not testing code ^^
+
+
 console.log('Player Cards: ' + playerCards);
 console.log('Computer Cards: ' + computerCards);
+
 
 // Test Cards for Player to Play
 
