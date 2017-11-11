@@ -5,9 +5,9 @@
  * Last Modified 11/9/17
  */
 
-var suspects = ['Jim', 'Jon', 'Lisa', 'Tom', 'Lance', 'Tina', 'Maxwell'];
-var weapons = ['knife', 'gun', 'candlestick', 'spoon', 'rope'];
-var rooms = ['study', 'kitchen', 'dining room', 'lavatory', 'sun room'];
+var suspects = ['Dr. Black', 'Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum'];
+var weapons = ['Candlestick', 'Dagger', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench'];
+var rooms = ['Kitchen', 'Ballroom', 'Conservatory', 'Billiard Room', 'Library', 'Study', 'Hall', 'Lounge', 'Dining Room'];
 var solution = [/* Suspect, Weapon, Room */];
 
 // Welcome the user
@@ -87,6 +87,47 @@ function dealCards(cards){
 	return [pCards, cCards];
 }
 
+/*
+* Creates the list of cards able to be 
+shown on the list for display
+****STILL NEED TO CREATE PLAYER HAND!!
+
+function stripOutHand(cards, hand){
+    var allButHand = [];
+	var count = 0;
+	for (i = 0; i < cards.length; i++){
+		if (!cards[i].includes(deltHand[0]) &&
+			!cards[i].includes(deltHand[1]) &&
+			!cards[i].includes(deltHand[2])){
+				allButPlayer[count] = cards[i];
+				count++;	
+		}		
+	}
+	return allButHand;
+}
+
+*/
+
+//Populates Suspect List for Dropdown Display
+function populateSuspects(){
+    for(i=0; i<suspects.length; i++) {  
+        document.write('<option value="' + suspects[i] +'">' + suspects[i] + '</option>');
+    }
+}
+//Populates Weapons list for Dropdown Display
+function populateWeapons(){
+    for(i=0; i<weapons.length; i++) {  
+        document.write('<option value="' + weapons[i] +'">' + weapons[i] + '</option>');
+    }
+}
+//Populates Rooms list for Dropdown Display
+function populateRooms(){
+    for(i=0; i<rooms.length; i++) {  
+        document.write('<option value="' + rooms[i] +'">' + rooms[i] + '</option>');
+    }
+}
+
+
 // Test the shuffle function
 var shuffledSuspects = shuffle(suspects);
 var shuffledWeapons = shuffle(weapons);
@@ -113,3 +154,6 @@ var deltWeapons = dealCards(playableWeapons);
 var deltRooms = dealCards(playableRooms);
 console.log('Player Cards: ' + deltSuspects[0] + ' : ' + deltWeapons[0] + ' : ' + deltRooms[0]);
 console.log('Player Cards: ' + deltSuspects[1] + ' : ' + deltWeapons[1] + ' : ' + deltRooms[1]);
+
+// Test Cards for Player to Play
+

@@ -10,23 +10,103 @@
 <html>
 <head>
 <title>Clue</title>
-<meta charset="utf-8"/>
+
 </head>
 <body>
 
 <h1>The Game of Clue: A who dunnit murder mystery</h1>
+    
+<table width="50%" cellspacing="3" cellpadding="0" border="0" align="center" bgcolor="#999999">
+  <tr bgcolor="#ffffff">
+    <th>Person</th>
+    <th>Location</th> 
+    <th>Weapon</th>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td>Dr. Black</td>
+    <td>Candlestick</td>
+    <td>Kitchen</td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td>Miss Scarlet</td>
+    <td>Dagger</td>
+    <td>Ballroom</td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td>Colonel Mustard</td>
+    <td>Lead Pipe</td>
+    <td>Conservatory</td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td>Mrs. White</td>
+    <td>Revolver</td>
+    <td>Billiard Room</td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td>Mr. Green</td>
+    <td>Rope</td>
+    <td>Library</td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td>Professor Plum</td>
+    <td>Wrench</td>
+    <td>Study</td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td> </td>
+    <td> </td>
+    <td>Hall</td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td> </td>
+    <td> </td>
+    <td>Lounge</td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td> </td>
+    <td> </td>
+    <td>Dining Room</td>
+  </tr>
+</table>
+    
 <div id='greeting'>
 <p id='userGreeting'></p>
 </div>
 
 
-
+    
 <form id='player'>
 Name: <input type='text' name='userName'></br>
 </form>
 <!-- Button has to be below the from close tag, because science -->
 <button onclick="dispUser()">Submit</button>
+<script src="Clue.js"></script>  
 
-<script src="Clue.js"></script> 
+
+<p>
+    <form id='guesses'>
+        <select id="selectSuspect">
+          <option>Choose A Suspect</option>
+          <script>
+             populateSuspects();
+          </script>
+        </select>
+          <select id="selectWeapon">
+          <option>Choose A Weapon</option>
+          <script>
+             populateWeapons();
+          </script>
+        </select>
+          <select id="selectRoom">
+          <option>Choose A Room</option>
+          <script>
+             populateRooms();
+          </script>
+        </select>
+        <input type="submit" id="myGuesses" value="Player Guesses">
+    </form>
+</p>
+
+
 </body>
 </html>
