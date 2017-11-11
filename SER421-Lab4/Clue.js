@@ -113,6 +113,10 @@ function checkGuess(){
 		solution.includes(weapon) &&
 		solution.includes(room)){
 			document.getElementById('result').innerHTML = 'Winner!!!!! That was the correct guess.';
+			// Display restart button
+			console.log("WINNNER!!!!!!!");
+			removeElement('btn');
+			addElement('continue', 'button', 'btn', 'onclick', 'restartGame()', 'Restart');
 		}
 	// Display one wrong part of the guess
 	else { 
@@ -124,10 +128,46 @@ function checkGuess(){
 		}
 		else {
 			document.getElementById('result').innerHTML = room + ' is NOT where the murder took place.';
-		}	
+		}
+		// Display continue button
+		removeElement('btn');
+		addElement('continue', 'button', 'btn', 'onclick', 'playCompTurn()', 'Continue')
 	}
 }
 
+/*
+*  Function to add an element with dynamic action listener.
+*  @param parentElm parent element id tag of the element to be replaced
+*  @param elmType type of element to be added (Probably buttons)
+*  @param id id tag for newly created element
+*  @param attribute ex. onclick, type, class etc.
+*  @param value value of the above attribute
+*  @param text works best for buttons that utilize the innerHTML as the button text
+*/
+function addElement(parentElm, elmType, id, attribute, value, text){
+	var p = document.getElementById(parentElm);
+	var newElement = document.createElement(elmType);
+	newElement.setAttribute('id', id);
+	newElement.setAttribute(attribute, value);
+	newElement.innerHTML = text;
+	p.appendChild(newElement);
+}
+
+// Removes an element from the document
+// @param elementId id attribute of the element to be removed.
+function removeElement(elementId) {
+	var element = document.getElementById(elementId);
+	element.parentNode.removeChild(element);
+}
+
+// NEEDS TO BE IMPLEMENTED
+function playCompTurn(){
+	console.log('Comp Turn played');
+}
+
+function restartGame(){
+	console.log('Restart Game Called');
+}
 /*
 * Creates the list of cards able to be 
 shown on the list for display
