@@ -87,6 +87,43 @@ function dealCards(cards){
 	return [pCards, cCards];
 }
 
+/*
+* Creates the list of cards able to be 
+shown on the list for display
+****STILL NEED TO CREATE PLAYER HAND!!
+*/
+function stripOutPlayer(cards, playerHand){
+	var allButPlayer = [];
+	var count = 0;
+	for (i = 0; i < cards.length; i++){
+		if (!cards[i].includes(playerHand[0]) &&
+			!cards[i].includes(playerHand[1]) &&
+			!cards[i].includes(playerHand[2])){
+				allButPlayer[count] = cards[i];
+				count++;	
+		}		
+	}
+	return allButPlayer;
+}
+
+/*
+* Creates the list of cards able to be played by computer
+***STILL NEED TO CREATE COMPUTER HAND
+*/
+function stripOutComputer(cards, compHand){
+	var allButComp = [];
+	var count = 0;
+	for (i = 0; i < cards.length; i++){
+		if (!cards[i].includes(compHand[0]) &&
+			!cards[i].includes(compHand[1]) &&
+			!cards[i].includes(compHand[2])){
+				allButComp[count] = compHand[i];
+				count++;	
+		}		
+	}
+	return allButComp;
+}
+
 // Test the shuffle function
 var shuffledSuspects = shuffle(suspects);
 var shuffledWeapons = shuffle(weapons);
@@ -113,3 +150,6 @@ var deltWeapons = dealCards(playableWeapons);
 var deltRooms = dealCards(playableRooms);
 console.log('Player Cards: ' + deltSuspects[0] + ' : ' + deltWeapons[0] + ' : ' + deltRooms[0]);
 console.log('Player Cards: ' + deltSuspects[1] + ' : ' + deltWeapons[1] + ' : ' + deltRooms[1]);
+
+// Test Cards for Player to Play
+
