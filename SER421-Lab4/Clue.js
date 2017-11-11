@@ -91,38 +91,42 @@ function dealCards(cards){
 * Creates the list of cards able to be 
 shown on the list for display
 ****STILL NEED TO CREATE PLAYER HAND!!
-*/
-function stripOutPlayer(cards, playerHand){
-	var allButPlayer = [];
+
+function stripOutHand(cards, hand){
+    var allButHand = [];
 	var count = 0;
 	for (i = 0; i < cards.length; i++){
-		if (!cards[i].includes(playerHand[0]) &&
-			!cards[i].includes(playerHand[1]) &&
-			!cards[i].includes(playerHand[2])){
+		if (!cards[i].includes(deltHand[0]) &&
+			!cards[i].includes(deltHand[1]) &&
+			!cards[i].includes(deltHand[2])){
 				allButPlayer[count] = cards[i];
 				count++;	
 		}		
 	}
-	return allButPlayer;
+	return allButHand;
 }
 
-/*
-* Creates the list of cards able to be played by computer
-***STILL NEED TO CREATE COMPUTER HAND
 */
-function stripOutComputer(cards, compHand){
-	var allButComp = [];
-	var count = 0;
-	for (i = 0; i < cards.length; i++){
-		if (!cards[i].includes(compHand[0]) &&
-			!cards[i].includes(compHand[1]) &&
-			!cards[i].includes(compHand[2])){
-				allButComp[count] = compHand[i];
-				count++;	
-		}		
-	}
-	return allButComp;
+
+//Populates Suspect List for Dropdown Display
+function populateSuspects(){
+    for(i=0; i<suspects.length; i++) {  
+        document.write('<option value="' + suspects[i] +'">' + suspects[i] + '</option>');
+    }
 }
+//Populates Weapons list for Dropdown Display
+function populateWeapons(){
+    for(i=0; i<weapons.length; i++) {  
+        document.write('<option value="' + weapons[i] +'">' + weapons[i] + '</option>');
+    }
+}
+//Populates Rooms list for Dropdown Display
+function populateRooms(){
+    for(i=0; i<rooms.length; i++) {  
+        document.write('<option value="' + rooms[i] +'">' + rooms[i] + '</option>');
+    }
+}
+
 
 // Test the shuffle function
 var shuffledSuspects = shuffle(suspects);

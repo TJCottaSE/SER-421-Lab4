@@ -74,13 +74,39 @@
 </div>
 
 
-
+    
 <form id='player'>
 Name: <input type='text' name='userName'></br>
 </form>
 <!-- Button has to be below the from close tag, because science -->
 <button onclick="dispUser()">Submit</button>
+<script src="Clue.js"></script>  
 
-<script src="Clue.js"></script> 
+
+<p>
+    <form id='guesses'>
+        <select id="selectSuspect">
+          <option>Choose A Suspect</option>
+          <script>
+             populateSuspects();
+          </script>
+        </select>
+          <select id="selectWeapon">
+          <option>Choose A Weapon</option>
+          <script>
+             populateWeapons();
+          </script>
+        </select>
+          <select id="selectRoom">
+          <option>Choose A Room</option>
+          <script>
+             populateRooms();
+          </script>
+        </select>
+        <input type="submit" id="myGuesses" value="Player Guesses">
+    </form>
+</p>
+
+
 </body>
 </html>
