@@ -8,6 +8,8 @@
 var suspects = ['Dr. Black', 'Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum'];
 var weapons = ['Candlestick', 'Dagger', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench'];
 var rooms = ['Kitchen', 'Ballroom', 'Conservatory', 'Billiard Room', 'Library', 'Study', 'Hall', 'Lounge', 'Dining Room'];
+var playerCards = [];
+var computerCards = [];
 var solution = [/* Suspect, Weapon, Room */];
 
 // Welcome the user
@@ -149,11 +151,14 @@ console.log('Playable Weapons: ' + playableWeapons);
 console.log('Playable Rooms: ' + playableRooms);
 
 // Test Dealing cards
-var deltSuspects =  dealCards(playableSuspects);
-var deltWeapons = dealCards(playableWeapons);
-var deltRooms = dealCards(playableRooms);
-console.log('Player Cards: ' + deltSuspects[0] + ' : ' + deltWeapons[0] + ' : ' + deltRooms[0]);
-console.log('Player Cards: ' + deltSuspects[1] + ' : ' + deltWeapons[1] + ' : ' + deltRooms[1]);
+var remainingCards = playableSuspects.concat(playableRooms, playableWeapons);
+console.log('All cards shuffled: ' + remainingCards);
+// Shuffle and deal the remaining cards
+var deltCards = dealCards(shuffle(remainingCards));
+playerCards = deltCards[0];
+computerCards = deltCards[1];
+console.log('Player Cards: ' + playerCards);
+console.log('Computer Cards: ' + computerCards);
 
 // Test Cards for Player to Play
 
