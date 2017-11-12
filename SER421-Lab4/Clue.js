@@ -112,17 +112,20 @@ function checkGuess(){
 	var suspect = x.elements[0].value;
 	var weapon = x.elements[1].value;
 	var room = x.elements[2].value;
-
-
-	// Show guess
-	var node = document.createElement('p'); 
-	var textnode = document.createTextNode('Proposed: ' + 
-		suspect + ' killed Dr. Black with a ' + weapon + ' in the ' + room +'.');
-	node.appendChild(textnode);
-	document.getElementById('guessHistory').appendChild(node);
-	// ^^ PART OF 8, SHOULD PROBABLY BE MOVED OUT ^^
-
-
+	console.log("Guess is: " + suspect + ", " + weapon + ", " + room);
+	// Log guess to session local storage
+	var thisGuess = [suspect, weapon, room];
+	var allGuesses = JSON.parse(sessionStorage.getItem("allGuesses"));
+	if (allGuesses){ // null check
+		var len = allGuesses.length;
+		allGuesses[len] = suspect;
+		allGuesses[len+1] = weapon;
+		allGuesses[len+2] = room;
+	} 
+	else {
+		allGuesses = thisGuess;
+	} 
+	sessionStorage.setItem('allGuesses', JSON.stringify(allGuesses));
 	// Check for winning solution
 	if (solution.includes(suspect) && 
 		solution.includes(weapon) &&
@@ -193,6 +196,37 @@ function restartGame(){
 	console.log('Restart Game Called');
 }
 
+	// Show guess
+function showHistory(){
+	var currentText = document.getElementById('history').innerHTML;
+	if (currentText == 'Show History'){
+		// print the guess history
+		console.log('show the history');
+		document.getElementById('history').innerHTML = 'Hide History';
+		var allGuesses = JSON.parse(sessionStorage.getItem("allGuesses"));
+		var node = document.createElement('p'); 
+		for (i = 0; i < allGuesses.length; i+=3){
+			var textnode = document.createTextNode('Proposed: ' + 
+				allGuesses[i] + ' killed Dr. Black with a ' + 
+				allGuesses[i+1] + ' in the ' + 
+				allGuesses[i+2] +'.');
+			node.appendChild(textnode);
+			node.appendChild(document.createElement('br'));
+		}
+		document.getElementById('guessHistory').appendChild(node);
+	}
+	else {
+		console.log('Hide the history');
+		document.getElementById('history').innerHTML = 'Show History';
+		document.getElementById('guessHistory').innerHTML = '';
+		// ^^ THis may not work ^^
+	}
+	// var node = document.createElement('p'); 
+	// var textnode = document.createTextNode('Proposed: ' + 
+	// 	suspect + ' killed Dr. Black with a ' + weapon + ' in the ' + room +'.');
+	// node.appendChild(textnode);
+	// document.getElementById('guessHistory').appendChild(node);
+}
 
 /*
 * Creates the list of cards able to be 
