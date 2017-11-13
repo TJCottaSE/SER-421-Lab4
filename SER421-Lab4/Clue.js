@@ -146,7 +146,7 @@ function checkGuess(suspect,weapon,room){
 	if (solution.includes(suspect) && 
 		solution.includes(weapon) &&
 		solution.includes(room)){
-			document.getElementById('result').innerHTML = 'Winner!!!!! That was the correct guess.';
+			document.getElementById('result').innerHTML = 'GUESS: '+suspect+' with the '+weapon+' in the '+room+'<p><b>Winner!!!!!</b> That was the correct guess.';
 			// Display restart button
 			console.log("WINNNER!!!!!!!");
 			removeElement('btn');
@@ -185,7 +185,18 @@ function createCompGuess(){
     var compSusGuess = getRandomGuess(compPlaySuspects);
     var compWeapGuess = getRandomGuess(compPlayWeapons);
     var compRoomGuess = getRandomGuess(compPlayRooms);
-    return [compSusGuess,compWeapGuess,compRoomGuess];  
+    var allGuesses=JSON.parse(sessionStorage.getItem("allGuesses"));
+    //var node = document.createElement('p'); 
+    for (i = 0; i < allGuesses.length; i+=3){
+        if(compSusGuess == allGuesses[i] && compWeapGuess == allGuesses[i+1] && compRoomGuess == allGuesses[i+2]){
+            var compSusGuess = getRandomGuess(compPlaySuspects);
+            var compWeapGuess = getRandomGuess(compPlayWeapons);
+            var compRoomGuess = getRandomGuess(compPlayRooms); 
+        }
+        else{
+            return [compSusGuess,compWeapGuess,compRoomGuess];
+        }
+    }
 }
 
 /*
