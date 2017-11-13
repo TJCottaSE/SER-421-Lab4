@@ -38,7 +38,7 @@
 Name: <input type='text' name='userName'></br>
 </form>
 <!-- Button has to be below the from close tag, because science -->
-<button onclick="dispUser()">Submit</button>
+<button id='dispUserSubmit' onclick="dispUser()">Submit</button>
 <!--<script src="Clue.js"></script>--> 
     
 <p><b>List of Player's Cards:</b> </p>
@@ -67,7 +67,7 @@ Name: <input type='text' name='userName'></br>
         </select>
 <!--        <input type="submit" id="myGuesses" value="Player Guesses"> -->
     </form>
-    <button id="playerSubmit" onclick="userTurn()">Submit</button>
+    <button id="playerSubmit" onclick="userTurn()" disabled="true">Submit</button>
 </p>
 
 <button id='history' onclick='showHistory()'>Show History</button>
