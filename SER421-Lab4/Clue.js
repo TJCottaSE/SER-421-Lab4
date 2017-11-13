@@ -5,7 +5,7 @@
  * Last Modified 11/9/17
  */
 
-var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum'];
+var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum','Mrs. Peacock'];
 var weapons = ['Candlestick', 'Dagger', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench'];
 var rooms = ['Kitchen', 'Ballroom', 'Conservatory', 'Billiard Room', 'Library', 'Study', 'Hall', 'Lounge', 'Dining Room'];
 var playerTurn = 'true';
@@ -148,7 +148,7 @@ function checkGuess(suspect,weapon,room){
 	if (solution.includes(suspect) && 
 		solution.includes(weapon) &&
 		solution.includes(room)){
-			document.getElementById('result').innerHTML = 'Winner!!!!! That was the correct guess.';
+			document.getElementById('result').innerHTML = 'GUESS: '+suspect+' with the '+weapon+' in the '+room+'<p><b>Winner!!!!!</b> That was the correct guess.';
 			// Display restart button
 			//console.log("WINNNER!!!!!!!");
 			removeElement('btn');
@@ -176,13 +176,37 @@ function checkGuess(suspect,weapon,room){
 
 
 function playCompTurn(){
-    checkGuess(compSusGuess,compWeapGuess,compRoomGuess);
+    var compGuess = createCompGuess();
+    checkGuess(compGuess[0],compGuess[1],compGuess[2]);
     //change button
     removeElement('btn');
     addElement('continue', 'button', 'btn', 'onclick', 'userTurn()', 'Continue');
     document.getElementById("playerSubmit").disabled = false;
 }
 
+/*
+* Function creates the Computer Guess by randomly choosing suspect, weapon, and room. It then verifies whether or not it's been guessed previously. If it has, then it shoots out a message on console.log and guesses 3 more guesses.
+*
+*/
+function createCompGuess(){
+    var compSusGuess = getRandomGuess(compPlaySuspects);
+    var compWeapGuess = getRandomGuess(compPlayWeapons);
+    var compRoomGuess = getRandomGuess(compPlayRooms);
+    var allGuesses=JSON.parse(sessionStorage.getItem("allGuesses"));
+    //var node = document.createElement('p'); 
+    for (i = 0; i < allGuesses.length; i+=3){
+        if(compSusGuess != allGuesses[i] && compWeapGuess != allGuesses[i+1] && compRoomGuess != allGuesses[i+2]){
+            return [compSusGuess,compWeapGuess,compRoomGuess];
+
+        }
+        else{
+            var compSusGuess = getRandomGuess(compPlaySuspects);
+            var compWeapGuess = getRandomGuess(compPlayWeapons);
+            var compRoomGuess = getRandomGuess(compPlayRooms); 
+            console.log("Oops! You already guessed that. Try again.");
+        }
+    }
+}
 
 /*
 *  Function to add an element with dynamic action listener.
@@ -390,13 +414,6 @@ var compPlayWeapons = stripOutSolution(weapons, compWeaponsSep);
 var compRoomsSep = [];
 var compRoomsSep2 = sortCardType(computerCards,rooms,compRoomsSep);
 var compPlayRooms = stripOutSolution(rooms, compRoomsSep);
-
- 
-//Gets Computer's Random Guess
-var compSusGuess = getRandomGuess(compPlaySuspects);
-var compWeapGuess = getRandomGuess(compPlayWeapons);
-var compRoomGuess = getRandomGuess(compPlayRooms);
-console.log("***"+compSusGuess+compWeapGuess+compRoomGuess);
 
 //Test Card Hands
 console.log('Player Cards: ' + playerCards);
