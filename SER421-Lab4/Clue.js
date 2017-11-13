@@ -112,16 +112,8 @@ function userTurn(){
 	var suspect = x.elements[0].value;
 	var weapon = x.elements[1].value;
 	var room = x.elements[2].value;
-	console.log("Guess is: " + suspect + ", " + weapon + ", " + room);
-    
+	//console.log("Guess is: " + suspect + ", " + weapon + ", " + room);
     checkGuess(suspect,weapon,room);
-    // Display continue button
-    removeElement('btn');
-    addElement('continue', 'button', 'btn', 'onclick', 'playCompTurn()', 'Computer Turn');
-    document.getElementById("playerSubmit").disabled = true;
-    // Should remove submit button from drop downs to force player to let computer play
-    // Also means it needs to be re-added after computer plays
-    // IMPLEMENT THIS
 }
 /*
 * This function pulls data from the guesses form and checks 
@@ -170,7 +162,20 @@ function checkGuess(suspect,weapon,room){
 		else {
 			document.getElementById('result').innerHTML = room + ' is NOT where the murder took place.';
 		}
+        if (playerTurn == 'true'){
+            document.getElementById("playerSubmit").disabled = true;
+            playerTurn = 'false';
+            removeElement('btn');
+            addElement('continue', 'button', 'btn', 'onclick', 'playCompTurn()', 'Computer Turn');
+               
+        }
+        else{
+            document.getElementById("playerSubmit").disabled = false;
+            playerTurn = 'true';
+            removeElement('btn');
+            addElement('continue', 'button', 'btn', 'onclick', 'userTurn()', 'Continue');
 
+        }
 	}
 }
 
@@ -179,9 +184,7 @@ function playCompTurn(){
     var compGuess = createCompGuess();
     checkGuess(compGuess[0],compGuess[1],compGuess[2]);
     //change button
-    removeElement('btn');
-    addElement('continue', 'button', 'btn', 'onclick', 'userTurn()', 'Continue');
-    document.getElementById("playerSubmit").disabled = false;
+    
 }
 
 /*
