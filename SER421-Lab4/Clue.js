@@ -233,10 +233,12 @@ function removeElement(elementId) {
 	element.parentNode.removeChild(element);
 }
 
+/*
 // NEEDS TO BE IMPLEMENTED
 function playCompTurn(){
 	console.log('Comp Turn played');
 }
+*/
 
 // NEEDS TO BE IMPLEMENTED
 function restartGame(){
