@@ -166,7 +166,7 @@ function checkGuess(suspect,weapon,room){
             document.getElementById("playerSubmit").disabled = true;
             playerTurn = 'false';
             removeElement('btn');
-            addElement('continue', 'button', 'btn', 'onclick', 'playCompTurn()', 'Computer Turn');
+            addElement('continue', 'button', 'btn', 'onclick', 'playCompTurn()', 'Continue');
                
         }
         else{
@@ -174,7 +174,7 @@ function checkGuess(suspect,weapon,room){
             playerTurn = 'true';
             removeElement('btn');
             addElement('continue', 'button', 'btn', 'onclick', 'userTurn()', 'Continue');
-
+            document.getElementById("btn").disabled = true;
         }
 	}
 }
