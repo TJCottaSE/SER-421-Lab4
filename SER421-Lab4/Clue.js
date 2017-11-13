@@ -18,6 +18,7 @@ var solution = [/* Suspect, Weapon, Room */];
 *  where the user can enter their name.addElement
 */
 function dispUser(){
+    
     var x = document.forms['player'];
     var name = x.elements[0].value;
 	//console.log('User name is: ' + name);
@@ -25,6 +26,7 @@ function dispUser(){
     document.getElementById('userGreeting').innerHTML = 'Welcome ' + name;
     removeElement('dispUserSubmit');
     removeElement('player');
+    document.getElementById("playerSubmit").disabled = false;
 }
 
 /*
