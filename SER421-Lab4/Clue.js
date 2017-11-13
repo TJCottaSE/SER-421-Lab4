@@ -188,13 +188,15 @@ function createCompGuess(){
     var allGuesses=JSON.parse(sessionStorage.getItem("allGuesses"));
     //var node = document.createElement('p'); 
     for (i = 0; i < allGuesses.length; i+=3){
-        if(compSusGuess == allGuesses[i] && compWeapGuess == allGuesses[i+1] && compRoomGuess == allGuesses[i+2]){
+        if(compSusGuess != allGuesses[i] && compWeapGuess != allGuesses[i+1] && compRoomGuess != allGuesses[i+2]){
+            return [compSusGuess,compWeapGuess,compRoomGuess];
+
+        }
+        else{
             var compSusGuess = getRandomGuess(compPlaySuspects);
             var compWeapGuess = getRandomGuess(compPlayWeapons);
             var compRoomGuess = getRandomGuess(compPlayRooms); 
-        }
-        else{
-            return [compSusGuess,compWeapGuess,compRoomGuess];
+            console.log("Oops! You already guessed that. Try again.");
         }
     }
 }
