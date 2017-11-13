@@ -115,13 +115,6 @@ function userTurn(){
 	console.log("Guess is: " + suspect + ", " + weapon + ", " + room);
     
     checkGuess(suspect,weapon,room);
-    // Display continue button
-    removeElement('btn');
-    addElement('continue', 'button', 'btn', 'onclick', 'playCompTurn()', 'Computer Turn');
-    document.getElementById("playerSubmit").disabled = true;
-    // Should remove submit button from drop downs to force player to let computer play
-    // Also means it needs to be re-added after computer plays
-    // IMPLEMENT THIS
 }
 /*
 * This function pulls data from the guesses form and checks 
@@ -154,6 +147,7 @@ function checkGuess(suspect,weapon,room){
 			removeElement('btn');
 			addElement('continue', 'button', 'btn', 'onclick', 'restartGame()', 'Restart');
 			setWinner();
+            document.getElementById("playerSubmit").disabled = true;
 			// Should remove submit button from drop downs to force player to let computer play
 			// Also means it needs to be re-added after computer plays
 			// IMPLEMENT THIS
@@ -170,6 +164,23 @@ function checkGuess(suspect,weapon,room){
 		else {
 			document.getElementById('result').innerHTML = room + ' is NOT where the murder took place.';
 		}
+        //changes the buttons based off of who is playing. If it's player's turn, then it will show the SUBMIT button. If it's the Computer's turn, just the Continue Button will be able to be clicked.
+        if (playerTurn == 'true'){
+            //changes the buttons
+            document.getElementById("playerSubmit").disabled = true;
+            playerTurn = 'false';
+            removeElement('btn');
+            addElement('continue', 'button', 'btn', 'onclick', 'playCompTurn()', 'Continue');
+
+        }
+        else{
+            //changes the buttons
+            document.getElementById("playerSubmit").disabled = false;
+            playerTurn = 'true';
+            removeElement('btn');
+            addElement('continue', 'button', 'btn', 'onclick', 'userTurn()', 'Continue');
+            document.getElementById("btn").disabled = true;
+        }
 
 	}
 }
@@ -178,10 +189,6 @@ function checkGuess(suspect,weapon,room){
 function playCompTurn(){
     var compGuess = createCompGuess();
     checkGuess(compGuess[0],compGuess[1],compGuess[2]);
-    //change button
-    removeElement('btn');
-    addElement('continue', 'button', 'btn', 'onclick', 'userTurn()', 'Continue');
-    document.getElementById("playerSubmit").disabled = false;
 }
 
 /*
