@@ -100,19 +100,35 @@ function dealCards(cards){
 }
 
 /*
+*This function pulls data from the guesses form and then checks to see if user has made a winning guess with the checkGuess() function. 
+*If the guess is incorrect, it passes it over to the playCompTurn() function for the computer to take a turn
+*/
+
+function userTurn(){
+    // Get data from form
+	var x = document.forms['guesses'];
+	var suspect = x.elements[0].value;
+	var weapon = x.elements[1].value;
+	var room = x.elements[2].value;
+	console.log("Guess is: " + suspect + ", " + weapon + ", " + room);
+    
+    checkGuess(suspect,weapon,room);
+    // Display continue button
+    removeElement('btn');
+    addElement('continue', 'button', 'btn', 'onclick', 'playCompTurn()', 'Computer Turn');
+    document.getElementById("playerSubmit").disabled = true;
+    // Should remove submit button from drop downs to force player to let computer play
+    // Also means it needs to be re-added after computer plays
+    // IMPLEMENT THIS
+}
+/*
 * This function pulls data from the guesses form and checks 
 * to see if the user has made a winning guess. Then depneding
 * on if the guess was correct or not updates the dom to reflect
 * a win condition, or reveals one characteristic of the 
 * guess that was incorrect. 
 */
-function checkGuess(){
-	// Get data from form
-	var x = document.forms['guesses'];
-	var suspect = x.elements[0].value;
-	var weapon = x.elements[1].value;
-	var room = x.elements[2].value;
-	console.log("Guess is: " + suspect + ", " + weapon + ", " + room);
+function checkGuess(suspect,weapon,room){
 	// Log guess to session local storage
 	var thisGuess = [suspect, weapon, room];
 	var allGuesses = JSON.parse(sessionStorage.getItem("allGuesses"));
@@ -138,7 +154,6 @@ function checkGuess(){
 			// Should remove submit button from drop downs to force player to let computer play
 			// Also means it needs to be re-added after computer plays
 			// IMPLEMENT THIS
-
 		}
 	// Display one wrong part of the guess
 	else { 
@@ -151,15 +166,19 @@ function checkGuess(){
 		else {
 			document.getElementById('result').innerHTML = room + ' is NOT where the murder took place.';
 		}
-		// Display continue button
-		removeElement('btn');
-		addElement('continue', 'button', 'btn', 'onclick', 'playCompTurn()', 'Continue');
-		// Should remove submit button from drop downs to force player to let computer play
-		// Also means it needs to be re-added after computer plays
-		// IMPLEMENT THIS
 
 	}
 }
+
+
+function playCompTurn(){
+    checkGuess(compSusGuess,compWeapGuess,compRoomGuess);
+    //change button
+    removeElement('btn');
+    addElement('continue', 'button', 'btn', 'onclick', 'userTurn()', 'Continue');
+    document.getElementById("playerSubmit").disabled = false;
+}
+
 
 /*
 *  Function to add an element with dynamic action listener.
@@ -186,17 +205,13 @@ function removeElement(elementId) {
 	element.parentNode.removeChild(element);
 }
 
-// NEEDS TO BE IMPLEMENTED
-function playCompTurn(){
-	console.log('Comp Turn played');
-}
 
 // NEEDS TO BE IMPLEMENTED
 function restartGame(){
 	console.log('Restart Game Called');
 }
 
-	// Show guess
+// Show guess
 function showHistory(){
 	var currentText = document.getElementById('history').innerHTML;
 	if (currentText == 'Show History'){
@@ -260,6 +275,16 @@ function sortCardType(arr1, arr2, arr3){
     }
 }
 
+/*
+Computer's Function to randomly select one Suspect, one Weapon, and one Room, all from not in the Computer's hand. 
+**TODO: If guess exists, choose again.
+*/
+function getRandomGuess(arr) {
+  guess = arr[Math.floor(Math.random() * arr.length)];
+    return guess;
+    
+}
+
 // Test the shuffle function
 var shuffledSuspects = shuffle(suspects);
 var shuffledWeapons = shuffle(weapons);
@@ -303,6 +328,24 @@ var roomsSeperated = [];
 var roomsSep2 = sortCardType(playerCards,rooms,roomsSeperated);
 var roomsDisplay = stripOutSolution(rooms, roomsSeperated);
 
+//Creates the cards which the computer can play with
+var compSuspectsSep = [];
+var compSuspectsSep2 = sortCardType(computerCards,suspects,compSuspectsSep);
+var compPlaySuspects = stripOutSolution(suspects, compSuspectsSep);
+var compWeaponsSep = [];
+var compWeaponsSep2 = sortCardType(computerCards,weapons,compWeaponsSep);
+var compPlayWeapons = stripOutSolution(weapons, compWeaponsSep);
+var compRoomsSep = [];
+var compRoomsSep2 = sortCardType(computerCards,rooms,compRoomsSep);
+var compPlayRooms = stripOutSolution(rooms, compRoomsSep);
+
+ 
+//Gets Computer's Random Guess
+var compSusGuess = getRandomGuess(compPlaySuspects);
+var compWeapGuess = getRandomGuess(compPlayWeapons);
+var compRoomGuess = getRandomGuess(compPlayRooms);
+console.log("***"+compSusGuess+compWeapGuess+compRoomGuess);
+
 //Test Card Hands
 console.log('Player Cards: ' + playerCards);
 console.log('Computer Cards: ' + computerCards);
@@ -312,3 +355,8 @@ console.log("allCards:"+allCards);
 console.log("Suspects for Display: "+suspectsDisplay);
 console.log("Weapons for Display: "+weaponsDisplay);
 console.log("Rooms for Display: "+roomsDisplay);
+
+//Test Computer's Playable Cards
+console.log("Suspects for Computer: "+compPlaySuspects);
+console.log("Weapons for Computer: "+compPlayWeapons);
+console.log("Rooms for Computer: "+compPlayRooms);
