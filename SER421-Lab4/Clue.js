@@ -23,6 +23,8 @@ function dispUser(){
 	//console.log('User name is: ' + name);
 	sessionStorage.setItem('playerName', name);
     document.getElementById('userGreeting').innerHTML = 'Welcome ' + name;
+    removeElement('dispUserSubmit');
+    removeElement('player');
 }
 
 /*
