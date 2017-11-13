@@ -240,19 +240,6 @@ function removeElement(elementId) {
 	element.parentNode.removeChild(element);
 }
 
-/*
-// NEEDS TO BE IMPLEMENTED
-<<<<<<< HEAD
-//function playCompTurn(){
-//	console.log('Comp Turn played');
-//}
-=======
-function playCompTurn(){
-	console.log('Comp Turn played');
-}
-*/
->>>>>>> branch 'master' of https://github.com/TJCottaSE/SER-421-Lab4.git
-
 // NEEDS TO BE IMPLEMENTED
 function restartGame(){
 	console.log('Restart Game Called');
@@ -551,12 +538,8 @@ var compPlayRooms = stripOutSolution(rooms, compRoomsSep);
 //console.log("Rooms for Display: "+roomsDisplay);
 
 //Test Computer's Playable Cards
-<<<<<<< HEAD
+
 //console.log("Suspects for Computer: "+compPlaySuspects);
 //console.log("Weapons for Computer: "+compPlayWeapons);
 //console.log("Rooms for Computer: "+compPlayRooms);
-=======
-console.log("Suspects for Computer: "+compPlaySuspects);
-console.log("Weapons for Computer: "+compPlayWeapons);
-console.log("Rooms for Computer: "+compPlayRooms);
->>>>>>> branch 'master' of https://github.com/TJCottaSE/SER-421-Lab4.git
+
