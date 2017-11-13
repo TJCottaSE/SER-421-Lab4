@@ -177,7 +177,6 @@ function checkGuess(suspect,weapon,room){
 
 function playCompTurn(){
     var compGuess = createCompGuess();
-    checkGuess(compSusGuess,compWeapGuess,compRoomGuess);
     checkGuess(compGuess[0],compGuess[1],compGuess[2]);
     //change button
     removeElement('btn');
