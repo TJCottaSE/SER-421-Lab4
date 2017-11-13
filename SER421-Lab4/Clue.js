@@ -5,9 +5,10 @@
  * Last Modified 11/9/17
  */
 
-var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum', 'Mrs. Peacock'];
+var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum','Mrs. Peacock'];
 var weapons = ['Candlestick', 'Dagger', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench'];
 var rooms = ['Kitchen', 'Ballroom', 'Conservatory', 'Billiard Room', 'Library', 'Study', 'Hall', 'Lounge', 'Dining Room'];
+var playerTurn = 'true';
 var playerCards = [];
 var computerCards = [];
 var solution = [/* Suspect, Weapon, Room */];
@@ -19,7 +20,8 @@ var solution = [/* Suspect, Weapon, Room */];
 function dispUser(){
     var x = document.forms['player'];
     var name = x.elements[0].value;
-    console.log('User name is: ' + name);
+	//console.log('User name is: ' + name);
+	sessionStorage.setItem('playerName', name);
     document.getElementById('userGreeting').innerHTML = 'Welcome ' + name;
 }
 
@@ -148,12 +150,14 @@ function checkGuess(suspect,weapon,room){
 		solution.includes(room)){
 			document.getElementById('result').innerHTML = 'GUESS: '+suspect+' with the '+weapon+' in the '+room+'<p><b>Winner!!!!!</b> That was the correct guess.';
 			// Display restart button
-			console.log("WINNNER!!!!!!!");
+			//console.log("WINNNER!!!!!!!");
 			removeElement('btn');
 			addElement('continue', 'button', 'btn', 'onclick', 'restartGame()', 'Restart');
+			setWinner();
 			// Should remove submit button from drop downs to force player to let computer play
 			// Also means it needs to be re-added after computer plays
 			// IMPLEMENT THIS
+
 		}
 	// Display one wrong part of the guess
 	else { 
@@ -173,6 +177,7 @@ function checkGuess(suspect,weapon,room){
 
 function playCompTurn(){
     var compGuess = createCompGuess();
+    checkGuess(compSusGuess,compWeapGuess,compRoomGuess);
     checkGuess(compGuess[0],compGuess[1],compGuess[2]);
     //change button
     removeElement('btn');
@@ -180,7 +185,10 @@ function playCompTurn(){
     document.getElementById("playerSubmit").disabled = false;
 }
 
-
+/*
+* Function creates the Computer Guess by randomly choosing suspect, weapon, and room. It then verifies whether or not it's been guessed previously. If it has, then it shoots out a message on console.log and guesses 3 more guesses.
+*
+*/
 function createCompGuess(){
     var compSusGuess = getRandomGuess(compPlaySuspects);
     var compWeapGuess = getRandomGuess(compPlayWeapons);
@@ -226,6 +234,10 @@ function removeElement(elementId) {
 	element.parentNode.removeChild(element);
 }
 
+// NEEDS TO BE IMPLEMENTED
+function playCompTurn(){
+	console.log('Comp Turn played');
+}
 
 // NEEDS TO BE IMPLEMENTED
 function restartGame(){
@@ -237,7 +249,7 @@ function showHistory(){
 	var currentText = document.getElementById('history').innerHTML;
 	if (currentText == 'Show History'){
 		// print the guess history
-		console.log('show the history');
+		//console.log('show the history');
 		document.getElementById('history').innerHTML = 'Hide History';
 		var allGuesses = JSON.parse(sessionStorage.getItem("allGuesses"));
 		var node = document.createElement('p'); 
@@ -252,16 +264,60 @@ function showHistory(){
 		document.getElementById('guessHistory').appendChild(node);
 	}
 	else {
-		console.log('Hide the history');
+		//console.log('Hide the history');
 		document.getElementById('history').innerHTML = 'Show History';
 		document.getElementById('guessHistory').innerHTML = '';
 		// ^^ THis may not work ^^
 	}
-	// var node = document.createElement('p'); 
-	// var textnode = document.createTextNode('Proposed: ' + 
-	// 	suspect + ' killed Dr. Black with a ' + weapon + ' in the ' + room +'.');
-	// node.appendChild(textnode);
-	// document.getElementById('guessHistory').appendChild(node);
+}
+
+
+/*
+*
+*  [ date, who, result ]
+*/
+function showRecord(){
+	var history = JSON.parse(localStorage.getItem('gameHistories'));
+	var node = document.createElement('p');
+	for (i = 0; i < history.length; i+=3){
+		var textnode = document.createTextNode(history[i] + 
+			': ' + history[i+1] + ' ' + history[i+2] + '.');
+		node.appendChild(textnode);
+		node.appendChild(document.createElement('br'));
+	}
+	document.getElementById('gameRecords').appendChild(node);
+}
+
+// Function stores the win/loss record to localStorage
+function setWinner(){
+	var pName = sessionStorage.getItem('playerName');
+	var date = new Date().toDateString();
+	var result = '';
+	if (playerTurn == 'true'){
+		result = 'won';
+	}
+	else {
+		result = 'lost';
+	}
+	if (pName){
+		var h = JSON.parse(localStorage.getItem('gameHistories'));
+		if (h) {
+			h.push(date, pName, result);
+		}
+		else {
+			h = [date, pName, result];
+		}
+	}
+	else {
+		var h = JSON.parse(localStorage.getItem('gameHistories'));
+		if (h){
+			h.push(date, 'Guest', result);
+		}
+		else {
+			h = [date, 'Guest', result];
+		}
+	}
+	localStorage.setItem('gameHistories', JSON.stringify(h));
 }
 
 //Populates Suspect List for Dropdown Display
@@ -310,9 +366,9 @@ function getRandomGuess(arr) {
 var shuffledSuspects = shuffle(suspects);
 var shuffledWeapons = shuffle(weapons);
 var shuffledRooms = shuffle(rooms)
-console.log(shuffledSuspects);
-console.log(shuffledWeapons);
-console.log(shuffledRooms);
+//console.log(shuffledSuspects);
+//console.log(shuffledWeapons);
+//console.log(shuffledRooms);
 
 // Test the pick winner function
 solution = pickWinningCards(shuffledSuspects, shuffledWeapons, shuffledRooms);
@@ -322,13 +378,13 @@ console.log('The winning combo is ' + solution);
 var playableSuspects =  stripOutSolution(suspects, solution);
 var playableWeapons =  stripOutSolution(weapons, solution);
 var playableRooms = stripOutSolution(rooms, solution);
-console.log('Playable Suspects: ' + playableSuspects);
-console.log('Playable Weapons: ' + playableWeapons);
-console.log('Playable Rooms: ' + playableRooms);
+//console.log('Playable Suspects: ' + playableSuspects);
+//console.log('Playable Weapons: ' + playableWeapons);
+//console.log('Playable Rooms: ' + playableRooms);
 
 // Test Dealing cards
 var remainingCards = playableSuspects.concat(playableRooms, playableWeapons);
-console.log('All cards shuffled: ' + remainingCards);
+//console.log('All cards shuffled: ' + remainingCards);
 
 
 // Shuffle and deal the remaining cards
@@ -359,15 +415,6 @@ var compPlayWeapons = stripOutSolution(weapons, compWeaponsSep);
 var compRoomsSep = [];
 var compRoomsSep2 = sortCardType(computerCards,rooms,compRoomsSep);
 var compPlayRooms = stripOutSolution(rooms, compRoomsSep);
-
- 
-//Gets Computer's Random Guess
-/*
-var compSusGuess = getRandomGuess(compPlaySuspects);
-var compWeapGuess = getRandomGuess(compPlayWeapons);
-var compRoomGuess = getRandomGuess(compPlayRooms);
-console.log("***"+compSusGuess+compWeapGuess+compRoomGuess);
-*/
 
 //Test Card Hands
 console.log('Player Cards: ' + playerCards);
