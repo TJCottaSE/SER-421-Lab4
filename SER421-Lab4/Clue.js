@@ -265,29 +265,44 @@ function showHistory(){
 		document.getElementById('guessHistory').appendChild(node);
 	}
 	else {
-		//console.log('Hide the history');
 		document.getElementById('history').innerHTML = 'Show History';
 		document.getElementById('guessHistory').innerHTML = '';
-		// ^^ THis may not work ^^
 	}
 }
 
 
 /*
-*
-*  [ date, who, result ]
+*  Function that shows the historical record of games played and
+*  the results.
 */
 function showRecord(){
-	var history = JSON.parse(localStorage.getItem('gameHistories'));
-	var node = document.createElement('p');
-	for (i = 0; i < history.length; i+=3){
-		var textnode = document.createTextNode(history[i] + 
-			': ' + history[i+1] + ' ' + history[i+2] + '.');
-		node.appendChild(textnode);
-		node.appendChild(document.createElement('br'));
+	var currentText = document.getElementById('record').innerHTML;
+	if (currentText == 'Show Record'){
+		document.getElementById('record').innerHTML = 'Hide Record';
+		var history = JSON.parse(localStorage.getItem('gameHistories'));
+		var node = document.createElement('p');
+		for (i = 0; i < history.length; i+=3){
+			var textnode = document.createTextNode(history[i] + 
+				': ' + history[i+1] + ' ' + history[i+2] + '.');
+			node.appendChild(textnode);
+			node.appendChild(document.createElement('br'));
+		}
+		document.getElementById('gameRecords').appendChild(node);
+		var resetStatsBtn = document.createElement('button');
+		resetStatsBtn.setAttribute('onclick', 'resetStats()');
+		resetStatsBtn.innerHTML = 'Reset Stats';
+		document.getElementById('gameRecords').appendChild(resetStatsBtn);
 	}
-	document.getElementById('gameRecords').appendChild(node);
+	else {
+		document.getElementById('record').innerHTML = 'Show Record';
+		document.getElementById('gameRecords').innerHTML = '';
+	}
+}
 
+// Function that resets the the all time statistics ONLY
+function resetStats(){
+	localStorage.removeItem('gameHistories');
+	showRecord();
 }
 
 // Function stores the win/loss record to localStorage
@@ -332,8 +347,8 @@ function populateSuspects(){
 // Repopulates the suspects drop down with stored session values
 function repopulateSuspects(){
 	var oldSuspects = JSON.parse(sessionStorage.getItem('suspectsDropDown'));
-	console.log(document.getElementById('selectSuspect').childElementCount);
-	console.log(document.getElementById('selectSuspect').firstElementChild);
+	//console.log(document.getElementById('selectSuspect').childElementCount);
+	//console.log(document.getElementById('selectSuspect').firstElementChild);
 	for (k = document.getElementById('selectSuspect').childElementCount; k > 1; k--){
 		document.getElementById('selectSuspect').remove(document.getElementById('selectSuspect').firstElementChild);
 	}
@@ -436,6 +451,7 @@ function checkExistingSession(){
 		computerCards = JSON.parse(sessionStorage.getItem('computerCards'));
 		solution = JSON.parse(sessionStorage.getItem('solution'));
 		showHistory2 = sessionStorage.getItem('showHistory');
+		showRecord2 = sessionStorage.getItem('showRecord');
 		// Reset the UI to match session history values
 		document.getElementById("cardHand").innerHTML = playerCards.join(", ");
 		repopulateSuspects();
@@ -450,11 +466,13 @@ function checkExistingSession(){
 		if (showHistory2 == 'true'){
 			showHistory();
 		}
-
+		if (showRecord2 == 'true'){
+			showRecord();
+		}
 	}
 }
 
-// Stores Session values
+// Stores Session values when the browswer window or tab is closed
 function setSessionValues(){
 	// Piece for greeting here KAREN LOOK AT THIS
 	
@@ -467,6 +485,12 @@ function setSessionValues(){
 	}
 	else {
 		sessionStorage.setItem('showHistory', 'true');
+	}
+	if (document.getElementById('record').innerHTML == 'Show Record'){
+		sessionStorage.setItem('showRecord', 'false');
+	}
+	else {
+		sessionStorage.setItem('showRecord', 'true');
 	}
 	sessionStorage.setItem('suspectsDropDown', JSON.stringify(suspectsDisplay));
 	sessionStorage.setItem('weaponsDropDown', JSON.stringify(weaponsDisplay));
