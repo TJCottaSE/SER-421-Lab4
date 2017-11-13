@@ -292,6 +292,7 @@ function showRecord(){
 		node.appendChild(document.createElement('br'));
 	}
 	document.getElementById('gameRecords').appendChild(node);
+
 }
 
 // Function stores the win/loss record to localStorage
@@ -439,7 +440,7 @@ function checkExistingSession(){
 		playerCards = JSON.parse(sessionStorage.getItem('playerCards'));
 		computerCards = JSON.parse(sessionStorage.getItem('computerCards'));
 		solution = JSON.parse(sessionStorage.getItem('solution'));
-		history = sessionStorage.getItem('showHistory');
+		showHistory2 = sessionStorage.getItem('showHistory');
 		// Reset the UI to match session history values
 		document.getElementById("cardHand").innerHTML = playerCards.join(", ");
 		repopulateSuspects();
@@ -451,7 +452,7 @@ function checkExistingSession(){
 		else {
 			document.getElementById('playerSubmit').disabled = false;
 		}
-		if (history == 'true'){
+		if (showHistory2 == 'true'){
 			showHistory();
 		}
 
@@ -466,7 +467,7 @@ function setSessionValues(){
 	sessionStorage.setItem('playerCards', JSON.stringify(playerCards));
 	sessionStorage.setItem('computerCards', JSON.stringify(computerCards));
 	sessionStorage.setItem('solution', JSON.stringify(solution));
-	if (document.getElementById('history').innerHTML = 'Show History'){
+	if (document.getElementById('history').innerHTML == 'Show History'){
 		sessionStorage.setItem('showHistory', 'false');
 	}
 	else {
