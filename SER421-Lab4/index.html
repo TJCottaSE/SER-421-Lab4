@@ -18,65 +18,31 @@
     
 <table width="50%" cellspacing="3" cellpadding="0" border="0" align="center" bgcolor="#999999">
   <tr bgcolor="#ffffff">
-    <th>Person</th>
-    <th>Location</th> 
-    <th>Weapon</th>
+    <th>Suspects</th>
+    <th>Weapons</th> 
+    <th>Locations</th>
   </tr>
   <tr bgcolor="#ffffff">
-    <td>Miss Scarlet</td>
-    <td>Dagger</td>
-    <td>Ballroom</td>
-  </tr>
-  <tr bgcolor="#ffffff">
-    <td>Colonel Mustard</td>
-    <td>Lead Pipe</td>
-    <td>Conservatory</td>
-  </tr>
-  <tr bgcolor="#ffffff">
-    <td>Mrs. White</td>
-    <td>Revolver</td>
-    <td>Billiard Room</td>
-  </tr>
-  <tr bgcolor="#ffffff">
-    <td>Mr. Green</td>
-    <td>Rope</td>
-    <td>Library</td>
-  </tr>
-  <tr bgcolor="#ffffff">
-    <td>Professor Plum</td>
-    <td>Wrench</td>
-    <td>Study</td>
-  </tr>
-  <tr bgcolor="#ffffff">
-    <td> </td>
-    <td> </td>
-    <td>Hall</td>
-  </tr>
-  <tr bgcolor="#ffffff">
-    <td> </td>
-    <td> </td>
-    <td>Lounge</td>
-  </tr>
-  <tr bgcolor="#ffffff">
-    <td> </td>
-    <td> </td>
-    <td>Dining Room</td>
+    <td>Miss Scarlet, Colonel Mustard, Mrs. White, Mr. Green, Professor Plum, Mrs. Peacock</td>
+    <td>Dagger, Candlestick, Lead Pipe, Revolver, Rope, Wrench</td>
+    <td>Ballroom, Kitchen, Conservatory, Billiard Room, Library, Study, Hall, Lounge, Dining Room</td>
   </tr>
 </table>
     
+    
 <div id='greeting'>
 <p id='userGreeting'></p>
-</div>
-
-
-    
+</div>  
 <form id='player'>
 Name: <input type='text' name='userName'></br>
 </form>
 <!-- Button has to be below the from close tag, because science -->
 <button onclick="dispUser()">Submit</button>
-<script src="Clue.js"></script>  
-
+<script src="Clue.js"></script> 
+    
+<p><b>List of Player's Cards:</b> </p>
+    <p id="cardHand"></p>
+    <script>document.getElementById("cardHand").innerHTML = playerCards.join(", ");</script>
 
 <p>
     <form id='guesses'>

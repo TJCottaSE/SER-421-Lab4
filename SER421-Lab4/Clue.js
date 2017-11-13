@@ -5,7 +5,7 @@
  * Last Modified 11/9/17
  */
 
-var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum'];
+var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum', 'Mrs. Peacock'];
 var weapons = ['Candlestick', 'Dagger', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench'];
 var rooms = ['Kitchen', 'Ballroom', 'Conservatory', 'Billiard Room', 'Library', 'Study', 'Hall', 'Lounge', 'Dining Room'];
 var playerCards = [];
@@ -228,46 +228,37 @@ function showHistory(){
 	// document.getElementById('guessHistory').appendChild(node);
 }
 
-/*
-* Creates the list of cards able to be 
-shown on the list for display
-****STILL NEED TO CREATE PLAYER HAND!!
-
-function stripOutHand(cards, hand){
-    var allButHand = [];
-	var count = 0;
-	for (i = 0; i < cards.length; i++){
-		if (!cards[i].includes(deltHand[0]) &&
-			!cards[i].includes(deltHand[1]) &&
-			!cards[i].includes(deltHand[2])){
-				allButPlayer[count] = cards[i];
-				count++;	
-		}		
-	}
-	return allButHand;
-}
-
-*/
-
 //Populates Suspect List for Dropdown Display
 function populateSuspects(){
-    for(i=0; i<suspects.length; i++) {  
-        document.write('<option value="' + suspects[i] +'">' + suspects[i] + '</option>');
+    for(i=0; i<suspectsDisplay.length; i++) {  
+        document.write('<option value="' + suspectsDisplay[i] +'">' + suspectsDisplay[i] + '</option>');
     }
 }
 //Populates Weapons list for Dropdown Display
 function populateWeapons(){
-    for(i=0; i<weapons.length; i++) {  
-        document.write('<option value="' + weapons[i] +'">' + weapons[i] + '</option>');
+    for(i=0; i<weaponsDisplay.length; i++) {  
+        document.write('<option value="' + weaponsDisplay[i] +'">' + weaponsDisplay[i] + '</option>');
     }
 }
 //Populates Rooms list for Dropdown Display
 function populateRooms(){
-    for(i=0; i<rooms.length; i++) {  
-        document.write('<option value="' + rooms[i] +'">' + rooms[i] + '</option>');
+    for(i=0; i<roomsDisplay.length; i++) {  
+        document.write('<option value="' + roomsDisplay[i] +'">' + roomsDisplay[i] + '</option>');
     }
 }
 
+/*
+*Sorts the card Types. If it's in each array, it gets put into another array.
+*/
+function sortCardType(arr1, arr2, arr3){
+    for(var i = 0; i < arr1.length; i++){
+        for(var j = 0; j < arr2.length; j++){ // j < is missed;
+         if(arr1[i] == arr2[j]){
+             arr3.push(arr1[i]); 
+        }
+       }
+    }
+}
 
 // Test the shuffle function
 var shuffledSuspects = shuffle(suspects);
@@ -300,6 +291,24 @@ playerCards = deltCards[0];
 computerCards = deltCards[1];
 // ^^ This is business logic and not testing code ^^
 
+//Sorts out all of the players cards by Suspect, Weapon, and Room, then removes them from the list of Suspects, Weapons, and Rooms for Display
+var allCards = suspects.concat(weapons, rooms);
+var suspectsSeperated = [];
+var suspectsSep2 = sortCardType(playerCards,suspects,suspectsSeperated);
+var suspectsDisplay = stripOutSolution(suspects, suspectsSeperated);
+var weaponsSeperated = [];
+var weaponsSep2 = sortCardType(playerCards,weapons,weaponsSeperated);
+var weaponsDisplay = stripOutSolution(weapons, weaponsSeperated);
+var roomsSeperated = [];
+var roomsSep2 = sortCardType(playerCards,rooms,roomsSeperated);
+var roomsDisplay = stripOutSolution(rooms, roomsSeperated);
 
+//Test Card Hands
 console.log('Player Cards: ' + playerCards);
 console.log('Computer Cards: ' + computerCards);
+console.log("allCards:"+allCards);
+
+//Test Cards for Display
+console.log("Suspects for Display: "+suspectsDisplay);
+console.log("Weapons for Display: "+weaponsDisplay);
+console.log("Rooms for Display: "+roomsDisplay);
