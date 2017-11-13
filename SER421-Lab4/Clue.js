@@ -112,7 +112,8 @@ function userTurn(){
 	var suspect = x.elements[0].value;
 	var weapon = x.elements[1].value;
 	var room = x.elements[2].value;
-	//console.log("Guess is: " + suspect + ", " + weapon + ", " + room);
+	console.log("Guess is: " + suspect + ", " + weapon + ", " + room);
+    
     checkGuess(suspect,weapon,room);
 }
 /*
@@ -146,6 +147,7 @@ function checkGuess(suspect,weapon,room){
 			removeElement('btn');
 			addElement('continue', 'button', 'btn', 'onclick', 'restartGame()', 'Restart');
 			setWinner();
+            document.getElementById("playerSubmit").disabled = true;
 			// Should remove submit button from drop downs to force player to let computer play
 			// Also means it needs to be re-added after computer plays
 			// IMPLEMENT THIS
@@ -162,20 +164,24 @@ function checkGuess(suspect,weapon,room){
 		else {
 			document.getElementById('result').innerHTML = room + ' is NOT where the murder took place.';
 		}
+        //changes the buttons based off of who is playing. If it's player's turn, then it will show the SUBMIT button. If it's the Computer's turn, just the Continue Button will be able to be clicked.
         if (playerTurn == 'true'){
+            //changes the buttons
             document.getElementById("playerSubmit").disabled = true;
             playerTurn = 'false';
             removeElement('btn');
             addElement('continue', 'button', 'btn', 'onclick', 'playCompTurn()', 'Continue');
-               
+
         }
         else{
+            //changes the buttons
             document.getElementById("playerSubmit").disabled = false;
             playerTurn = 'true';
             removeElement('btn');
             addElement('continue', 'button', 'btn', 'onclick', 'userTurn()', 'Continue');
             document.getElementById("btn").disabled = true;
         }
+
 	}
 }
 
@@ -183,22 +189,27 @@ function checkGuess(suspect,weapon,room){
 function playCompTurn(){
     var compGuess = createCompGuess();
     checkGuess(compGuess[0],compGuess[1],compGuess[2]);
-    //change button
-    
 }
 
 /*
-* Function creates the Computer Guess by randomly choosing suspect, weapon, and room. It then verifies whether or not it's been guessed previously. If it has, then it shoots out a message on console.log and guesses 3 more guesses.
+* Function creates the Computer Guess by randomly choosing suspect, weapon, and room. 
+* It then verifies whether or not it's been guessed previously. 
+* If it has, then it shoots out a message on console.log and guesses 3 more guesses.
 *
 */
 function createCompGuess(){
     var compSusGuess = getRandomGuess(compPlaySuspects);
     var compWeapGuess = getRandomGuess(compPlayWeapons);
-    var compRoomGuess = getRandomGuess(compPlayRooms);
-    var allGuesses=JSON.parse(sessionStorage.getItem("allGuesses"));
+	var compRoomGuess = getRandomGuess(compPlayRooms);
+	var allGuesses = [];
+	if (sessionStorage.getItem('allGuesses') != null){
+		allGuesses = JSON.parse(sessionStorage.getItem("allGuesses"));
+	}
     //var node = document.createElement('p'); 
     for (i = 0; i < allGuesses.length; i+=3){
-        if(compSusGuess != allGuesses[i] && compWeapGuess != allGuesses[i+1] && compRoomGuess != allGuesses[i+2]){
+		if(compSusGuess != allGuesses[i] || 
+		   compWeapGuess != allGuesses[i+1] ||
+		   compRoomGuess != allGuesses[i+2]){
             return [compSusGuess,compWeapGuess,compRoomGuess];
 
         }
@@ -236,13 +247,6 @@ function removeElement(elementId) {
 	element.parentNode.removeChild(element);
 }
 
-/*
-// NEEDS TO BE IMPLEMENTED
-function playCompTurn(){
-	console.log('Comp Turn played');
-}
-*/
-
 // NEEDS TO BE IMPLEMENTED
 function restartGame(){
 	console.log('Restart Game Called');
@@ -268,28 +272,44 @@ function showHistory(){
 		document.getElementById('guessHistory').appendChild(node);
 	}
 	else {
-		//console.log('Hide the history');
 		document.getElementById('history').innerHTML = 'Show History';
 		document.getElementById('guessHistory').innerHTML = '';
-		// ^^ THis may not work ^^
 	}
 }
 
 
 /*
-*
-*  [ date, who, result ]
+*  Function that shows the historical record of games played and
+*  the results.
 */
 function showRecord(){
-	var history = JSON.parse(localStorage.getItem('gameHistories'));
-	var node = document.createElement('p');
-	for (i = 0; i < history.length; i+=3){
-		var textnode = document.createTextNode(history[i] + 
-			': ' + history[i+1] + ' ' + history[i+2] + '.');
-		node.appendChild(textnode);
-		node.appendChild(document.createElement('br'));
+	var currentText = document.getElementById('record').innerHTML;
+	if (currentText == 'Show Record'){
+		document.getElementById('record').innerHTML = 'Hide Record';
+		var history = JSON.parse(localStorage.getItem('gameHistories'));
+		var node = document.createElement('p');
+		for (i = 0; i < history.length; i+=3){
+			var textnode = document.createTextNode(history[i] + 
+				': ' + history[i+1] + ' ' + history[i+2] + '.');
+			node.appendChild(textnode);
+			node.appendChild(document.createElement('br'));
+		}
+		document.getElementById('gameRecords').appendChild(node);
+		var resetStatsBtn = document.createElement('button');
+		resetStatsBtn.setAttribute('onclick', 'resetStats()');
+		resetStatsBtn.innerHTML = 'Reset Stats';
+		document.getElementById('gameRecords').appendChild(resetStatsBtn);
 	}
-	document.getElementById('gameRecords').appendChild(node);
+	else {
+		document.getElementById('record').innerHTML = 'Show Record';
+		document.getElementById('gameRecords').innerHTML = '';
+	}
+}
+
+// Function that resets the the all time statistics ONLY
+function resetStats(){
+	localStorage.removeItem('gameHistories');
+	showRecord();
 }
 
 // Function stores the win/loss record to localStorage
@@ -330,17 +350,79 @@ function populateSuspects(){
         document.write('<option value="' + suspectsDisplay[i] +'">' + suspectsDisplay[i] + '</option>');
     }
 }
+
+// Repopulates the suspects drop down with stored session values
+function repopulateSuspects(){
+	var oldSuspects = JSON.parse(sessionStorage.getItem('suspectsDropDown'));
+	//console.log(document.getElementById('selectSuspect').childElementCount);
+	//console.log(document.getElementById('selectSuspect').firstElementChild);
+	for (k = document.getElementById('selectSuspect').childElementCount; k > 1; k--){
+		document.getElementById('selectSuspect').remove(document.getElementById('selectSuspect').firstElementChild);
+	}
+	for (i = 0; i < oldSuspects.length; i++){
+		var opt = document.createElement('option');
+		opt.innerHTML = oldSuspects[i];
+		opt.setAttribute('value', oldSuspects[i]);
+		document.getElementById('selectSuspect').appendChild(opt);
+	}
+	var opt2 = document.createElement('option');
+	opt2.innerHTML = 'Choose A Suspect';
+	opt2.setAttribute('selected', 'true');
+	document.getElementById('selectSuspect').appendChild(opt2);
+}
+
 //Populates Weapons list for Dropdown Display
 function populateWeapons(){
     for(i=0; i<weaponsDisplay.length; i++) {  
         document.write('<option value="' + weaponsDisplay[i] +'">' + weaponsDisplay[i] + '</option>');
     }
 }
+
+// Repopulates the suspects drop down with stored session values
+function repopulateWeapons(){
+	var oldWeapons = JSON.parse(sessionStorage.getItem('weaponsDropDown'));
+	console.log(document.getElementById('selectWeapon').childElementCount);
+	console.log(document.getElementById('selectWeapon').firstElementChild);
+	for (k = document.getElementById('selectWeapon').childElementCount; k > 1; k--){
+		document.getElementById('selectWeapon').remove(document.getElementById('selectWeapon').firstElementChild);
+	}
+	for (i = 0; i < oldWeapons.length; i++){
+		var opt = document.createElement('option');
+		opt.innerHTML = oldWeapons[i];
+		opt.setAttribute('value', oldWeapons[i]);
+		document.getElementById('selectWeapon').appendChild(opt);
+	}
+	var opt2 = document.createElement('option');
+	opt2.innerHTML = 'Choose A Weapon';
+	opt2.setAttribute('selected', 'true');
+	document.getElementById('selectWeapon').appendChild(opt2);
+}
+
 //Populates Rooms list for Dropdown Display
 function populateRooms(){
     for(i=0; i<roomsDisplay.length; i++) {  
         document.write('<option value="' + roomsDisplay[i] +'">' + roomsDisplay[i] + '</option>');
     }
+}
+
+// Repopulates the room drop down with stored session values
+function repopulateRooms(){
+	var oldRooms = JSON.parse(sessionStorage.getItem('roomsDropDown'));
+	console.log(document.getElementById('selectRoom').childElementCount);
+	console.log(document.getElementById('selectRoom').firstElementChild);
+	for (k = document.getElementById('selectRoom').childElementCount; k > 1; k--){
+		document.getElementById('selectRoom').remove(document.getElementById('selectRoom').firstElementChild);
+	}
+	for (i = 0; i < oldRooms.length; i++){
+		var opt = document.createElement('option');
+		opt.innerHTML = oldRooms[i];
+		opt.setAttribute('value', oldRooms[i]);
+		document.getElementById('selectRoom').appendChild(opt);
+	}
+	var opt2 = document.createElement('option');
+	opt2.innerHTML = 'Choose A Room';
+	opt2.setAttribute('selected', 'true');
+	document.getElementById('selectRoom').appendChild(opt2);
 }
 
 /*
@@ -349,9 +431,9 @@ function populateRooms(){
 function sortCardType(arr1, arr2, arr3){
     for(var i = 0; i < arr1.length; i++){
         for(var j = 0; j < arr2.length; j++){ // j < is missed;
-         if(arr1[i] == arr2[j]){
-             arr3.push(arr1[i]); 
-        }
+            if(arr1[i] == arr2[j]){
+        		arr3.push(arr1[i]); 
+        	}
        }
     }
 }
@@ -363,7 +445,63 @@ Computer's Function to randomly select one Suspect, one Weapon, and one Room, al
 function getRandomGuess(arr) {
   guess = arr[Math.floor(Math.random() * arr.length)];
     return guess;
-    
+}
+
+/*
+*  Function that resets all session storage and local storage,
+*  intended for use on page reloads.
+*/
+function checkExistingSession(){
+	if (sessionStorage.getItem('playerCards') != null){
+		playerTurn = sessionStorage.getItem('playerTurn');
+		playerCards = JSON.parse(sessionStorage.getItem('playerCards'));
+		computerCards = JSON.parse(sessionStorage.getItem('computerCards'));
+		solution = JSON.parse(sessionStorage.getItem('solution'));
+		showHistory2 = sessionStorage.getItem('showHistory');
+		showRecord2 = sessionStorage.getItem('showRecord');
+		// Reset the UI to match session history values
+		document.getElementById("cardHand").innerHTML = playerCards.join(", ");
+		repopulateSuspects();
+		repopulateWeapons();
+		repopulateRooms();
+		if (playerTurn == 'true'){
+			document.getElementById('playerSubmit').disabled = true;
+		}
+		else {
+			document.getElementById('playerSubmit').disabled = false;
+		}
+		if (showHistory2 == 'true'){
+			showHistory();
+		}
+		if (showRecord2 == 'true'){
+			showRecord();
+		}
+	}
+}
+
+// Stores Session values when the browswer window or tab is closed
+function setSessionValues(){
+	// Piece for greeting here KAREN LOOK AT THIS
+	
+	sessionStorage.setItem('playerTurn', playerTurn);
+	sessionStorage.setItem('playerCards', JSON.stringify(playerCards));
+	sessionStorage.setItem('computerCards', JSON.stringify(computerCards));
+	sessionStorage.setItem('solution', JSON.stringify(solution));
+	if (document.getElementById('history').innerHTML == 'Show History'){
+		sessionStorage.setItem('showHistory', 'false');
+	}
+	else {
+		sessionStorage.setItem('showHistory', 'true');
+	}
+	if (document.getElementById('record').innerHTML == 'Show Record'){
+		sessionStorage.setItem('showRecord', 'false');
+	}
+	else {
+		sessionStorage.setItem('showRecord', 'true');
+	}
+	sessionStorage.setItem('suspectsDropDown', JSON.stringify(suspectsDisplay));
+	sessionStorage.setItem('weaponsDropDown', JSON.stringify(weaponsDisplay));
+	sessionStorage.setItem('roomsDropDown', JSON.stringify(roomsDisplay));
 }
 
 // Test the shuffle function
@@ -421,16 +559,18 @@ var compRoomsSep2 = sortCardType(computerCards,rooms,compRoomsSep);
 var compPlayRooms = stripOutSolution(rooms, compRoomsSep);
 
 //Test Card Hands
-console.log('Player Cards: ' + playerCards);
-console.log('Computer Cards: ' + computerCards);
-console.log("allCards:"+allCards);
+//console.log('Player Cards: ' + playerCards);
+//console.log('Computer Cards: ' + computerCards);
+//console.log("allCards:"+allCards);
 
 //Test Cards for Display
-console.log("Suspects for Display: "+suspectsDisplay);
-console.log("Weapons for Display: "+weaponsDisplay);
-console.log("Rooms for Display: "+roomsDisplay);
+//console.log("Suspects for Display: "+suspectsDisplay);
+//console.log("Weapons for Display: "+weaponsDisplay);
+//console.log("Rooms for Display: "+roomsDisplay);
 
 //Test Computer's Playable Cards
-console.log("Suspects for Computer: "+compPlaySuspects);
-console.log("Weapons for Computer: "+compPlayWeapons);
-console.log("Rooms for Computer: "+compPlayRooms);
+
+//console.log("Suspects for Computer: "+compPlaySuspects);
+//console.log("Weapons for Computer: "+compPlayWeapons);
+//console.log("Rooms for Computer: "+compPlayRooms);
+
