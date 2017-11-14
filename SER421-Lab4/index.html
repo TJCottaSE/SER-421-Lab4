@@ -19,12 +19,76 @@
 
 <style>
   #div1 {
-      width: 1024px;
-      height: 1024px;
-      padding: 5px;
-      border: 1px solid #aaaaaa;
-      background-image: url('lab4media/board.png');
-      background-repeat: no-repeat;
+    width: 1024px;
+    height: 1024px;
+    padding: 5px;
+    border: 1px solid #aaaaaa;
+    background-image: url('lab4media/board.png');
+    background-repeat: no-repeat;
+    position: relative;
+  }
+  #kitchen {
+    width: 338px;
+    height: 340px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  #ballRoom {
+    width: 400px;
+    height: 340px;
+    position: absolute;
+    top: 0px;
+    left: 338px;
+  }
+  #conservatory {
+    width: 300px;
+    height: 285px;
+    position: absolute;
+    top: 0px;
+    left: 738px;
+  }
+  #diningRoom {
+    width: 338px;
+    height: 340px;
+    position: absolute;
+    top: 340px;
+    left: 0px;
+  }
+  #billiardRoom {
+    width: 300px;
+    height: 230px;
+    position: absolute;
+    top: 285px;
+    right: 0px;
+  }
+  #library {
+    width: 300px;
+    height: 270px;
+    position: absolute;
+    top: 515px;
+    right: 0px;
+  }
+  #lounge {
+    width: 338px;
+    height: 350px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+  }
+  #hall {
+    width: 400px;
+    height: 350px;
+    position: absolute;
+    bottom: 0px;
+    left: 338px;
+  }
+  #study {
+    width: 300px;
+    height: 260px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
   }
 </style>
 
@@ -35,8 +99,16 @@
 <img id='MrsWhite' src='lab4media/MrsWhite.jpg' draggable="true" ondragstart="drag(event)">
 <img id='ProfPlum' src='lab4media/ProfPlum.jpg' draggable="true" ondragstart="drag(event)">
 </br>
-<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
-
+<div id="div1">
+  <div id='kitchen' ondrop='drop(event)' ondragover='allowDrop(event)'></div>
+  <div id='ballRoom' ondrop='drop(event)' ondragover='allowDrop(event)'></div>
+  <div id='conservatory' ondrop='drop(event)' ondragover='allowDrop(event)'></div>
+  <div id='diningRoom' ondrop='drop(event)' ondragover='allowDrop(event)'></div>
+  <div id='billiardRoom' ondrop='drop(event)' ondragover='allowDrop(event)'></div>
+  <div id='library' ondrop='drop(event)' ondragover='allowDrop(event)'></div>
+  <div id='lounge' ondrop='drop(event)' ondragover='allowDrop(event)'></div>
+  <div id='hall' ondrop='drop(event)' ondragover='allowDrop(event)'></div>
+  <div id='study' ondrop='drop(event)' ondragover='allowDrop(event)'></div>
 </div>
 </br>
 <img id='candlestick' src='lab4media/candlestick.jpg' draggable="true" ondragstart="drag(event)">
@@ -45,6 +117,9 @@
 <img id='revolver' src='lab4media/revolver.jpg' draggable="true" ondragstart="drag(event)">
 <img id='rope' src='lab4media/rope.jpg' draggable="true" ondragstart="drag(event)">
 <img id='wrench' src='lab4media/wrench.jpg' draggable="true" ondragstart="drag(event)">
+
+
+
 
 <table width="50%" cellspacing="3" cellpadding="0" border="0" align="center" bgcolor="#999999">
   <tr bgcolor="#ffffff">
