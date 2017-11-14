@@ -2,7 +2,7 @@
  * Source file for game of Clue.
  * SER 421 Fall B 2017
  * @Author Tony Cotta, Karen Zaunscherb
- * Last Modified 11/9/17
+ * Last Modified 11/13/17
  */
 
 var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Professor Plum','Mrs. Peacock'];
@@ -25,7 +25,7 @@ function dispUser(){
     var name = x.elements[0].value;
 	//console.log('User name is: ' + name);
 	sessionStorage.setItem('playerName', name);
-    document.getElementById('userGreeting').innerHTML = 'Welcome ' + name;
+    document.getElementById('userGreeting').innerHTML = 'Welcome, ' + name+'! Please make your guess for the Suspect, Weapon, and Room to find out... <i>Who Dunnit??</i>';
     removeElement('dispUserSubmit');
     removeElement('player');
     document.getElementById("playerSubmit").disabled = false;
@@ -75,7 +75,9 @@ function pickWinningCards(suspects, weapons, rooms){
 	return [sus, wep, room];
 }
 
-// Function the strips the solution card from the array.
+/* Function the strips the solution card from the array.
+ * Takes input 
+*/
 function stripOutSolution(cards, solution){
 	var ret = [];
 	var count = 0;
@@ -108,9 +110,11 @@ function dealCards(cards){
 }
 
 /*
-*This function pulls data from the guesses form and then checks to see if user has made a winning guess with the checkGuess() function. 
-*If the guess is incorrect, it passes it over to the playCompTurn() function for the computer to take a turn
-*/
+ * This function pulls data from the guesses form and then checks to see if 
+ * user has made a winning guess with the checkGuess() function. 
+ * If the guess is incorrect, it passes it over to the playCompTurn() 
+ * function for the computer to take a turn
+ */
 
 function userTurn(){
     // Get data from form
@@ -119,7 +123,7 @@ function userTurn(){
 	var weapon = x.elements[1].value;
 	var room = x.elements[2].value;
 	console.log("Guess is: " + suspect + ", " + weapon + ", " + room);
-    
+    //runs the guess through the checkGuess function
     checkGuess(suspect,weapon,room);
 }
 /*
@@ -191,7 +195,9 @@ function checkGuess(suspect,weapon,room){
 	}
 }
 
-
+ /* function to play the computer's turn, using createCompGuess
+  * and checkGuess() functions
+  */
 function playCompTurn(){
     var compGuess = createCompGuess();
     checkGuess(compGuess[0],compGuess[1],compGuess[2]);
@@ -204,22 +210,25 @@ function playCompTurn(){
 *
 */
 function createCompGuess(){
+    //gets random guesses
     var compSusGuess = getRandomGuess(compPlaySuspects);
     var compWeapGuess = getRandomGuess(compPlayWeapons);
 	var compRoomGuess = getRandomGuess(compPlayRooms);
 	var allGuesses = [];
-	if (sessionStorage.getItem('allGuesses') != null){
+	//gets the sessionStorage in order to verify guess hasn't been used
+    if (sessionStorage.getItem('allGuesses') != null){
 		allGuesses = JSON.parse(sessionStorage.getItem("allGuesses"));
 	}
-    //var node = document.createElement('p'); 
+    //verifies that guess is new and hasn't already been done
     for (i = 0; i < allGuesses.length; i+=3){
+        //if the guess hasn't been done, it submits those guesses
 		if(compSusGuess != allGuesses[i] || 
 		   compWeapGuess != allGuesses[i+1] ||
 		   compRoomGuess != allGuesses[i+2]){
             return [compSusGuess,compWeapGuess,compRoomGuess];
-
         }
         else{
+            //if the guess has been done before, it reguesses.
             var compSusGuess = getRandomGuess(compPlaySuspects);
             var compWeapGuess = getRandomGuess(compPlayWeapons);
             var compRoomGuess = getRandomGuess(compPlayRooms); 
@@ -246,14 +255,18 @@ function addElement(parentElm, elmType, id, attribute, value, text){
 	p.appendChild(newElement);
 }
 
-// Removes an element from the document
-// @param elementId id attribute of the element to be removed.
+/* Removes an element from the document
+ * @param elementId id attribute of the element to be removed.
+ */
 function removeElement(elementId) {
 	var element = document.getElementById(elementId);
 	element.parentNode.removeChild(element);
 }
 
-// NEEDS TO BE IMPLEMENTED
+/* Restarts the game
+ * When player selects RESTART, sessionStorage information is removed
+ * and the main loop is called to play again.
+ */
 function restartGame(){
 	console.log('Restart Game Called');
 	sessionStorage.removeItem('allGuesses');
@@ -273,7 +286,11 @@ function restartGame(){
 	location.reload(false); // Reloads page from cache.
 }
 
-// Show guess
+/* Shows the Guess History
+ * When player selects Show History, the information for the
+ * previous guesses is shown. If the player clicks "Hide History",
+ * It hides the information of guess history
+ */
 function showHistory(){
 	var currentText = document.getElementById('history').innerHTML;
 	if (currentText == 'Show History'){
@@ -327,13 +344,17 @@ function showRecord(){
 	}
 }
 
-// Function that resets the the all time statistics ONLY
+/* 
+ * Function that resets the the all time statistics ONLY
+ */
 function resetStats(){
 	localStorage.removeItem('gameHistories');
 	showRecord();
 }
 
-// Function stores the win/loss record to localStorage
+/*
+ * Function stores the win/loss record to localStorage
+ */
 function setWinner(){
 	var pName = sessionStorage.getItem('playerName');
 	var date = new Date().toDateString();
@@ -365,14 +386,18 @@ function setWinner(){
 	localStorage.setItem('gameHistories', JSON.stringify(h));
 }
 
-//Populates Suspect List for Dropdown Display
+/*
+ * Populates Suspect List for Dropdown Display
+ */ 
 function populateSuspects(){
     for(i=0; i<suspectsDisplay.length; i++) {  
         document.write('<option value="' + suspectsDisplay[i] +'">' + suspectsDisplay[i] + '</option>');
     }
 }
 
-// Repopulates the suspects drop down with stored session values
+/*
+ * Repopulates the suspects drop down with stored session values
+ */
 function repopulateSuspects(){
 	var oldSuspects = JSON.parse(sessionStorage.getItem('suspectsDropDown'));
 	//console.log(document.getElementById('selectSuspect').childElementCount);
@@ -392,14 +417,18 @@ function repopulateSuspects(){
 	document.getElementById('selectSuspect').appendChild(opt2);
 }
 
-//Populates Weapons list for Dropdown Display
+/*
+ * Populates Weapons list for Dropdown Display
+ */
 function populateWeapons(){
     for(i=0; i<weaponsDisplay.length; i++) {  
         document.write('<option value="' + weaponsDisplay[i] +'">' + weaponsDisplay[i] + '</option>');
     }
 }
 
-// Repopulates the suspects drop down with stored session values
+/*
+ * Repopulates the suspects drop down with stored session values
+ */
 function repopulateWeapons(){
 	var oldWeapons = JSON.parse(sessionStorage.getItem('weaponsDropDown'));
 	console.log(document.getElementById('selectWeapon').childElementCount);
@@ -419,14 +448,18 @@ function repopulateWeapons(){
 	document.getElementById('selectWeapon').appendChild(opt2);
 }
 
-//Populates Rooms list for Dropdown Display
+/*
+ * Populates Rooms list for Dropdown Display
+ */
 function populateRooms(){
     for(i=0; i<roomsDisplay.length; i++) {  
         document.write('<option value="' + roomsDisplay[i] +'">' + roomsDisplay[i] + '</option>');
     }
 }
 
-// Repopulates the room drop down with stored session values
+/*
+ * Repopulates the room drop down with stored session values
+ */
 function repopulateRooms(){
 	var oldRooms = JSON.parse(sessionStorage.getItem('roomsDropDown'));
 	console.log(document.getElementById('selectRoom').childElementCount);
@@ -447,8 +480,8 @@ function repopulateRooms(){
 }
 
 /*
-*Sorts the card Types. If it's in each array, it gets put into another array.
-*/
+ * Sorts the card Types. If it's in each array, it gets put into another array.
+ */
 function sortCardType(arr1, arr2, arr3){
     for(var i = 0; i < arr1.length; i++){
         for(var j = 0; j < arr2.length; j++){ // j < is missed;
@@ -460,8 +493,8 @@ function sortCardType(arr1, arr2, arr3){
 }
 
 /*
-Computer's Function to randomly select one Suspect, one Weapon, and one Room, all from not in the Computer's hand. 
-**TODO: If guess exists, choose again.
+* Computer's Function to randomly select one Suspect, one Weapon, 
+* and one Room, all from not in the Computer's hand. 
 */
 function getRandomGuess(arr) {
   guess = arr[Math.floor(Math.random() * arr.length)];
@@ -469,9 +502,9 @@ function getRandomGuess(arr) {
 }
 
 /*
-*  Function that resets all session storage and local storage,
-*  intended for use on page reloads.
-*/
+ * Function that resets all session storage and local storage,
+ * intended for use on page reloads.
+ */
 function checkExistingSession(){
 	if (sessionStorage.getItem('playerCards') != null){
 		playerTurn = sessionStorage.getItem('playerTurn');
@@ -500,14 +533,16 @@ function checkExistingSession(){
 	}
 }
 
-// Stores Session values when the browswer window or tab is closed
+/*
+ * Stores Session values when the browswer window or tab is closed
+ */
 function setSessionValues(){
 	// Piece for greeting here KAREN LOOK AT THIS
-	
 	sessionStorage.setItem('playerTurn', playerTurn);
 	sessionStorage.setItem('playerCards', JSON.stringify(playerCards));
 	sessionStorage.setItem('computerCards', JSON.stringify(computerCards));
 	sessionStorage.setItem('solution', JSON.stringify(solution));
+    //sessionStorage.setItem('playerName', name);
 	if (document.getElementById('history').innerHTML == 'Show History'){
 		sessionStorage.setItem('showHistory', 'false');
 	}
@@ -525,76 +560,55 @@ function setSessionValues(){
 	sessionStorage.setItem('roomsDropDown', JSON.stringify(roomsDisplay));
 }
 
+/*
+ * Main loop function, which contains all of the relevant information of 
+ * picking winner cards, shuffling cards, etc. 
+ */
 function mainLoop(){
-// Test the shuffle function
-var shuffledSuspects = shuffle(suspects);
-var shuffledWeapons = shuffle(weapons);
-var shuffledRooms = shuffle(rooms)
-//console.log(shuffledSuspects);
-//console.log(shuffledWeapons);
-//console.log(shuffledRooms);
+    // Test the shuffle function
+    var shuffledSuspects = shuffle(suspects);
+    var shuffledWeapons = shuffle(weapons);
+    var shuffledRooms = shuffle(rooms)
 
-// Test the pick winner function
-solution = pickWinningCards(shuffledSuspects, shuffledWeapons, shuffledRooms);
-console.log('The winning combo is ' + solution);
+    // Test the pick winner function
+    solution = pickWinningCards(shuffledSuspects, shuffledWeapons, shuffledRooms);
+    console.log('The winning combo is ' + solution);
 
-// Test Stripping solution out
-var playableSuspects =  stripOutSolution(suspects, solution);
-var playableWeapons =  stripOutSolution(weapons, solution);
-var playableRooms = stripOutSolution(rooms, solution);
-//console.log('Playable Suspects: ' + playableSuspects);
-//console.log('Playable Weapons: ' + playableWeapons);
-//console.log('Playable Rooms: ' + playableRooms);
+    // Test Stripping solution out
+    var playableSuspects =  stripOutSolution(suspects, solution);
+    var playableWeapons =  stripOutSolution(weapons, solution);
+    var playableRooms = stripOutSolution(rooms, solution);
 
-// Test Dealing cards
-var remainingCards = playableSuspects.concat(playableRooms, playableWeapons);
-//console.log('All cards shuffled: ' + remainingCards);
+    // Test Dealing cards
+    var remainingCards = playableSuspects.concat(playableRooms, playableWeapons);
 
+    // Shuffle and deal the remaining cards
+    var deltCards = dealCards(shuffle(remainingCards));
+    playerCards = deltCards[0];
+    computerCards = deltCards[1];
 
-// Shuffle and deal the remaining cards
-var deltCards = dealCards(shuffle(remainingCards));
-playerCards = deltCards[0];
-computerCards = deltCards[1];
-// ^^ This is business logic and not testing code ^^
+    //Sorts out all of the players cards by Suspect, Weapon, and Room, then removes them from the list of Suspects, Weapons, and Rooms for Display
+    //var allCards = suspects.concat(weapons, rooms);
+    var suspectsSeperated = [];
+    sortCardType(playerCards,suspects,suspectsSeperated);
+    suspectsDisplay = suspects.filter(function(x) { return suspectsSeperated.indexOf(x) < 0 });
+    var weaponsSeperated = [];
+    sortCardType(playerCards,weapons,weaponsSeperated);
+    weaponsDisplay = weapons.filter(function(x) { return weaponsSeperated.indexOf(x) < 0 });
+    var roomsSeperated = [];
+    sortCardType(playerCards,rooms,roomsSeperated);
+    roomsDisplay = rooms.filter(function(x) { return roomsSeperated.indexOf(x) < 0 });
 
-//Sorts out all of the players cards by Suspect, Weapon, and Room, then removes them from the list of Suspects, Weapons, and Rooms for Display
-var allCards = suspects.concat(weapons, rooms);
-var suspectsSeperated = [];
-var suspectsSep2 = sortCardType(playerCards,suspects,suspectsSeperated);
-suspectsDisplay = stripOutSolution(suspects, suspectsSeperated);
-var weaponsSeperated = [];
-var weaponsSep2 = sortCardType(playerCards,weapons,weaponsSeperated);
-weaponsDisplay = stripOutSolution(weapons, weaponsSeperated);
-var roomsSeperated = [];
-var roomsSep2 = sortCardType(playerCards,rooms,roomsSeperated);
-roomsDisplay = stripOutSolution(rooms, roomsSeperated);
-
-//Creates the cards which the computer can play with
-var compSuspectsSep = [];
-var compSuspectsSep2 = sortCardType(computerCards,suspects,compSuspectsSep);
-compPlaySuspects = stripOutSolution(suspects, compSuspectsSep);
-var compWeaponsSep = [];
-var compWeaponsSep2 = sortCardType(computerCards,weapons,compWeaponsSep);
-compPlayWeapons = stripOutSolution(weapons, compWeaponsSep);
-var compRoomsSep = [];
-var compRoomsSep2 = sortCardType(computerCards,rooms,compRoomsSep);
-compPlayRooms = stripOutSolution(rooms, compRoomsSep);
+    //Creates the cards which the computer can play with
+    var compSuspectsSep = [];
+    sortCardType(computerCards,suspects,compSuspectsSep);
+    compPlaySuspects = suspects.filter(function(x) { return compSuspectsSep.indexOf(x) < 0 });
+    var compWeaponsSep = [];
+    sortCardType(computerCards,weapons,compWeaponsSep);
+    compPlayWeapons = weapons.filter(function(x) { return compWeaponsSep.indexOf(x) < 0 });
+    var compRoomsSep = [];
+    sortCardType(computerCards,rooms,compRoomsSep);
+    compPlayRooms = rooms.filter(function(x) { return compRoomsSep.indexOf(x) < 0 });
 }
 
 mainLoop();
-//Test Card Hands
-//console.log('Player Cards: ' + playerCards);
-//console.log('Computer Cards: ' + computerCards);
-//console.log("allCards:"+allCards);
-
-//Test Cards for Display
-//console.log("Suspects for Display: "+suspectsDisplay);
-//console.log("Weapons for Display: "+weaponsDisplay);
-//console.log("Rooms for Display: "+roomsDisplay);
-
-//Test Computer's Playable Cards
-
-//console.log("Suspects for Computer: "+compPlaySuspects);
-//console.log("Weapons for Computer: "+compPlayWeapons);
-//console.log("Rooms for Computer: "+compPlayRooms);
-
