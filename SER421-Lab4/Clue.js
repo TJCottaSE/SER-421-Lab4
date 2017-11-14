@@ -800,11 +800,57 @@ function playUI(){
 	}
     console.log("***"+weapon);
     console.log("***ROOM2:"+roomw);
-    console.log(suspect);
+    //translate the UI to the Arrays built in
+    var suspTrans =(oppositeTranslation_UI(suspect));
+    //filter so it's only the guess for the suspect
+    var suspGuess = [];
+    suspGuess= suspects.filter(function(x) { return suspTrans.indexOf(x) < 0 });
+    
+    var weapTrans =(oppositeTranslation_UI(weapon));
+    console.log(weapTrans);
+    //filter so it's only the guess for the suspect
+    var weapGuess = [];
+    weapGuess= weapons.filter(function(x) { return weapTrans.indexOf(x) < 0 });
+    
+    console.log(weapGuess); //user's weapon guess
+    console.log(suspGuess); //user's suspect guess
+    
 }
 
+/*
+ * function which translates from the UI names into the Array names
+ * for Suspects, Weapons, and Rooms
+ */
 
-
+function oppositeTranslation_UI(array){
+	for (i = 0; i < array.length; i++){
+		// Translate Player names
+		if (array[i] =='MissScarlet' ){array[i] = 'Miss Scarlet';}
+		else if (array[i] =='ColMustard' ){array[i] = 'Colonel Mustard';}
+		else if (array[i] == 'MrsWhite'){array[i] = 'Mrs. White';}
+		else if (array[i] == 'MrGreen'){array[i] = 'Mr. Green';}
+		else if (array[i] == 'ProfPlum'){array[i] = 'Professor Plum';}
+		else if (array[i] == 'MrsPeacock'){array[i] = 'Mrs. Peacock';}
+		// Translate Weapons
+		else if (array[i] == 'candlestick'){array[i] = 'Candlestick';}
+		else if (array[i] == 'knife'){array[i] = 'Dagger';}
+		else if (array[i] == 'leadpipe'){array[i] = 'Lead Pipe';}
+		else if (array[i] == 'revolver'){array[i] = 'Revolver';}
+		else if (array[i] == 'rope'){array[i] = 'Rope';}
+		else if (array[i] == 'wrench'){array[i] = 'Wrench';}
+		// Translate Rooms
+		else if (array[i] == 'kitchen'){array[i] = 'Kitchen';}
+		else if (array[i] == 'ballRoom'){array[i] = 'Ballroom';}
+		else if (array[i] == 'conservatory'){array[i] = 'Conservatory';}
+		else if (array[i] == 'billiardRoom'){array[i] = 'Billiard Room';}
+		else if (array[i] == 'library'){array[i] = 'Library';}
+		else if (array[i] == 'study'){array[i] = 'Study';}
+		else if (array[i] == 'hall'){array[i] = 'Hall';}
+		else if (array[i] == 'lounge'){array[i] = 'Lounge';}
+		else if (array[i] == 'diningRoom'){array[i] = 'Dining Room';}
+	}
+	return array;
+}
 
 
 

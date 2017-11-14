@@ -1,6 +1,4 @@
 SER 421 Web apps and Mobile systems
-Tony 'TJ' Cotta
-Karen Zaunscherb
 Lab 4
 Clue
 
