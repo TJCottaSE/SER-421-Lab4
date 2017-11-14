@@ -193,8 +193,100 @@ function checkGuess(suspect,weapon,room){
 
 
 function playCompTurn(){
-    var compGuess = createCompGuess();
+	var compGuess = createCompGuess();
+	showCompGuess_UI(guessTanslation_UI(compGuess));
     checkGuess(compGuess[0],compGuess[1],compGuess[2]);
+}
+
+// Translation layer to UI component names
+function guessTanslation_UI(array){
+	for (i = 0; i < array.length; i++){
+		// Translate Player names
+		if (array[i] == 'Miss Scarlet'){array[i] = 'MissScarlet';}
+		else if (array[i] == 'Colonel Mustard'){array[i] = 'ColMustard';}
+		else if (array[i] == 'Mrs. White'){array[i] = 'MrsWhite';}
+		else if (array[i] == 'Mr. Green'){array[i] = 'MrGreen';}
+		else if (array[i] == 'Professor Plum'){array[i] = 'ProfPlum';}
+		else if (array[i] == 'Mrs. Peacock'){array[i] = 'MrsPeacock';}
+		// Translate Weapons
+		else if (array[i] == 'Candlestick'){array[i] = 'candlestick';}
+		else if (array[i] == 'Dagger'){array[i] = 'knife';}
+		else if (array[i] == 'Lead Pipe'){array[i] = 'leadpipe';}
+		else if (array[i] == 'Revolver'){array[i] = 'revolver';}
+		else if (array[i] == 'Rope'){array[i] = 'rope';}
+		else if (array[i] == 'Wrench'){array[i] = 'wrench';}
+		// Translate Rooms
+		else if (array[i] == 'Kitchen'){array[i] = 'kitchen';}
+		else if (array[i] == 'Ballroom'){array[i] = 'ballRoom';}
+		else if (array[i] == 'Conservatory'){array[i] = 'conservatory';}
+		else if (array[i] == 'Billiard Room'){array[i] = 'billiardRoom';}
+		else if (array[i] == 'Library'){array[i] = 'library';}
+		else if (array[i] == 'Study'){array[i] = 'study';}
+		else if (array[i] == 'Hall'){array[i] = 'hall';}
+		else if (array[i] == 'Lounge'){array[i] = 'lounge';}
+		else if (array[i] == 'Dining Room'){array[i] = 'diningRoom';}
+	}
+	return array;
+}
+
+/*
+*  Function that displays the computers guess on the board.
+*  @param the array representing the computers guess
+*/
+function showCompGuess_UI(computerGuess){
+	var player = computerGuess[0];
+	var weapon = computerGuess[1];
+	var room = computerGuess[2];
+	// Add Player to Room
+	var numPlayers = document.getElementById('playerPane').childElementCount;
+	for (i = 0; i < numPlayers; i++){
+		var player2 = document.getElementById('playerPane').firstElementChild;
+		var pName = player2.getAttribute('id');
+		if (pName == player){
+			// Append player to the room
+			var numRooms = document.getElementById('div1').childElementCount;
+			for (j = 0; j < numRooms; j++){
+				var room2 = document.getElementById('div1').firstElementChild;
+				var roomName = room2.getAttribute('id');
+				if (roomName == room){
+					document.getElementById('div1').firstElementChild.appendChild(player2);
+				}
+				// Needed to keep board consistency and allow room traversals
+				var addBack2 = document.getElementById('div1').firstElementChild;
+				document.getElementById('div1').firstElementChild.remove();
+				document.getElementById('div1').appendChild(addBack2);
+			}
+		}
+		// Needed to keep board consistency and allow room traversals
+		var addBack = document.getElementById('playerPane').firstElementChild;
+		document.getElementById('playerPane').firstElementChild.remove();
+		document.getElementById('playerPane').appendChild(addBack);
+	}
+	// Add Weapon to Room
+	var numWeapons = document.getElementById('weaponPane').childElementCount;
+	for (i = 0; i < numWeapons; i++){
+		var weapon2 = document.getElementById('weaponPane').firstElementChild;
+		var wName = weapon2.getAttribute('id');
+		if (wName == weapon){
+			// Append weapon to the room
+			var numRooms = document.getElementById('div1').childElementCount;
+			for (j = 0; j < numRooms; j++){
+				var room3 = document.getElementById('div1').firstElementChild;
+				var roomName = room3.getAttribute('id');
+				if (roomName == room){
+					document.getElementById('div1').firstElementChild.appendChild(weapon2);
+				}
+				// Needed to keep board consistency and allow room traversals
+				var addBack4 = document.getElementById('div1').firstElementChild;
+				document.getElementById('div1').firstElementChild.remove();
+				document.getElementById('div1').appendChild(addBack4);
+			}
+		}
+		// Needed to keep board consistency and allow room traversals
+		var addBack3 = document.getElementById('weaponPane').firstElementChild;
+		document.getElementById('weaponPane').firstElementChild.remove();
+		document.getElementById('weaponPane').appendChild(addBack3);
+	}
 }
 
 /*
@@ -613,12 +705,17 @@ function drop(ev) {
     ev.target.appendChild(document.getElementById(data));
 }
 
+/*
+*  Function that resest the UI board. This function goes through each
+*  of the rooms removing all cards and placing them back in the respective
+*  starting postitions off to the top or bottom of the board. 
+*/
 function resetDnD(){
 	var numRooms = document.getElementById('div1').childElementCount;
-	for (i = 0; i < numRooms; i++){
+	for (i = 0; i < numRooms; i++){ // For Each Room
 		var room = document.getElementById('div1').firstElementChild;
 		var numCards = room.childElementCount;
-		for (j = 0; j < numCards; j++){
+		for (j = 0; j < numCards; j++){ // Move card back to player pane
 			var subElement = room.firstElementChild;
 			if (subElement.getAttribute('id') == 'ColMustard' ||
 				subElement.getAttribute('id') == 'MissScarlet' ||
@@ -628,7 +725,7 @@ function resetDnD(){
 				subElement.getAttribute('id') == 'ProfPlum'){
 					var charPane = document.getElementById('playerPane');
 					charPane.appendChild(subElement);
-			}
+			} // Move card back to weapons pane
 			else if (subElement.getAttribute('id') == 'candlestick' ||
 					subElement.getAttribute('id') == 'knife' ||
 					subElement.getAttribute('id') == 'leadpipe' ||
@@ -639,6 +736,7 @@ function resetDnD(){
 						weapPane.appendChild(subElement);
 					}
 		}
+		// Needed to keep board consistency and allow room traversals
 		var addBack = document.getElementById('div1').firstElementChild;
 		document.getElementById('div1').firstElementChild.remove();
 		document.getElementById('div1').appendChild(addBack);
