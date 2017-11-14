@@ -613,6 +613,38 @@ function drop(ev) {
     ev.target.appendChild(document.getElementById(data));
 }
 
+function resetDnD(){
+	var numRooms = document.getElementById('div1').childElementCount;
+	for (i = 0; i < numRooms; i++){
+		var room = document.getElementById('div1').firstElementChild;
+		var numCards = room.childElementCount;
+		for (j = 0; j < numCards; j++){
+			var subElement = room.firstElementChild;
+			if (subElement.getAttribute('id') == 'ColMustard' ||
+				subElement.getAttribute('id') == 'MissScarlet' ||
+				subElement.getAttribute('id') == 'MrGreen' ||
+				subElement.getAttribute('id') == 'MrsPeacock' ||
+				subElement.getAttribute('id') == 'MrsWhite' ||
+				subElement.getAttribute('id') == 'ProfPlum'){
+					var charPane = document.getElementById('playerPane');
+					charPane.appendChild(subElement);
+			}
+			else if (subElement.getAttribute('id') == 'candlestick' ||
+					subElement.getAttribute('id') == 'knife' ||
+					subElement.getAttribute('id') == 'leadpipe' ||
+					subElement.getAttribute('id') == 'revolver' ||
+					subElement.getAttribute('id') == 'rope' ||
+					subElement.getAttribute('id') == 'wrench'){
+						var weapPane = document.getElementById('weaponPane');
+						weapPane.appendChild(subElement);
+					}
+		}
+		var addBack = document.getElementById('div1').firstElementChild;
+		document.getElementById('div1').firstElementChild.remove();
+		document.getElementById('div1').appendChild(addBack);
+	}
+}
+
 
 
 
