@@ -1,11 +1,9 @@
-<!-- 
-/**
+<!-- /**
  * Source file for game of Clue.
  * SER 421 Fall B 2017
  * @Author Tony Cotta, Karen Zaunscherb
- * Last Modified 11/9/17
- */
--->
+ * Last Modified 11/14/17
+ */ -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,9 +12,7 @@
 </head>
 <script src="Clue.js"></script> 
 <body onload='checkExistingSession()' onbeforeunload=setSessionValues()>
-
 <h1>The Game of Clue: A who dunnit murder mystery</h1>
-
 <style>
   #div1 {
     width: 1024px;
@@ -120,22 +116,6 @@
   <img id='rope' src='lab4media/rope.jpg' draggable="true" ondragstart="drag(event)">
   <img id='wrench' src='lab4media/wrench.jpg' draggable="true" ondragstart="drag(event)">
 </div>
-<button id='resetUI' onclick='resetDnD()'>Reset Board</button>
-</br></br></br>
-<table width="50%" cellspacing="3" cellpadding="0" border="0" align="center" bgcolor="#999999">
-  <tr bgcolor="#ffffff">
-    <th>Suspects</th>
-    <th>Weapons</th> 
-    <th>Locations</th>
-  </tr>
-  <tr bgcolor="#ffffff">
-    <td>Miss Scarlet, Colonel Mustard, Mrs. White, Mr. Green, Professor Plum, Mrs. Peacock</td>
-    <td>Dagger, Candlestick, Lead Pipe, Revolver, Rope, Wrench</td>
-    <td>Ballroom, Kitchen, Conservatory, Billiard Room, Library, Study, Hall, Lounge, Dining Room</td>
-  </tr>
-</table>
-    
-    
 <div id='greeting'>
 <p id='userGreeting'></p>
 </div>  
@@ -144,37 +124,14 @@ Name: <input type='text' name='userName'></br>
 </form>
 <!-- Button has to be below the from close tag, because science -->
 <button id='dispUserSubmit' onclick="dispUser()">Submit</button>
-<!--<script src="Clue.js"></script>--> 
-    
-<p><b>List of Player's Cards:</b> </p>
+<p><b>List of Player's Cards:</b></p>
     <p id="cardHand"></p>
     <script>document.getElementById("cardHand").innerHTML = playerCards.join(", ");</script>
-
 <p>
-    <form id='guesses'>
-        <select id="selectSuspect">
-          <option>Choose A Suspect</option>
-          <script>
-             populateSuspects();
-          </script>
-        </select>
-          <select id="selectWeapon">
-          <option>Choose A Weapon</option>
-          <script>
-             populateWeapons();
-          </script>
-        </select>
-          <select id="selectRoom">
-          <option>Choose A Room</option>
-          <script>
-             populateRooms();
-          </script>
-        </select>
-<!--        <input type="submit" id="myGuesses" value="Player Guesses"> -->
-    </form>
     <button id="playerSubmit" onclick="userTurn()" disabled="true">Submit</button>
+    <button id='resetUI' onclick='resetDnD()'>Reset Board</button>
 </p>
-
+<p id='invalid'></p>
 <button id='history' onclick='showHistory()'>Show History</button>
 <div id='guessHistory'><!-- Guess History dynamically added here --></div>
 </br>
@@ -186,4 +143,3 @@ Name: <input type='text' name='userName'></br>
 <div id='gameRecords'><!-- Historical game record dynamically added here--></div>
 </body>
 </html>
-
