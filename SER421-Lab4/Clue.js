@@ -12,6 +12,8 @@ var playerTurn = 'true';
 var playerCards = [];
 var computerCards = [];
 var solution = [/* Suspect, Weapon, Room */];
+var suspectsDisplay = [], weaponsDisplay = [], roomsDisplay = [];
+var compPlaySuspects = [], compPlayWeapons = [], compPlayRooms = [];
 
 /*
 *  Welcome the user by getting the value from the form field
@@ -254,6 +256,21 @@ function removeElement(elementId) {
 // NEEDS TO BE IMPLEMENTED
 function restartGame(){
 	console.log('Restart Game Called');
+	sessionStorage.removeItem('allGuesses');
+	sessionStorage.removeItem('playerName');
+	if (sessionStorage.getItem('computerCards')){
+		sessionStorage.removeItem('computerCards');
+		sessionStorage.removeItem('playerCards');
+		sessionStorage.removeItem('playerTurn');
+		sessionStorage.removeItem('roomDropDown');
+		sessionStorage.removeItem('showHistory');
+		sessionStorage.removeItem('showRecord');
+		sessionStorage.removeItem('solution');
+		sessionStorage.removeItem('suspectsDropDown');
+		sessionStorage.removeItem('weaponsDropDown');
+	}
+	mainLoop();
+	location.reload(false); // Reloads page from cache.
 }
 
 // Show guess
@@ -508,6 +525,7 @@ function setSessionValues(){
 	sessionStorage.setItem('roomsDropDown', JSON.stringify(roomsDisplay));
 }
 
+function mainLoop(){
 // Test the shuffle function
 var shuffledSuspects = shuffle(suspects);
 var shuffledWeapons = shuffle(weapons);
@@ -543,25 +561,27 @@ computerCards = deltCards[1];
 var allCards = suspects.concat(weapons, rooms);
 var suspectsSeperated = [];
 var suspectsSep2 = sortCardType(playerCards,suspects,suspectsSeperated);
-var suspectsDisplay = stripOutSolution(suspects, suspectsSeperated);
+suspectsDisplay = stripOutSolution(suspects, suspectsSeperated);
 var weaponsSeperated = [];
 var weaponsSep2 = sortCardType(playerCards,weapons,weaponsSeperated);
-var weaponsDisplay = stripOutSolution(weapons, weaponsSeperated);
+weaponsDisplay = stripOutSolution(weapons, weaponsSeperated);
 var roomsSeperated = [];
 var roomsSep2 = sortCardType(playerCards,rooms,roomsSeperated);
-var roomsDisplay = stripOutSolution(rooms, roomsSeperated);
+roomsDisplay = stripOutSolution(rooms, roomsSeperated);
 
 //Creates the cards which the computer can play with
 var compSuspectsSep = [];
 var compSuspectsSep2 = sortCardType(computerCards,suspects,compSuspectsSep);
-var compPlaySuspects = stripOutSolution(suspects, compSuspectsSep);
+compPlaySuspects = stripOutSolution(suspects, compSuspectsSep);
 var compWeaponsSep = [];
 var compWeaponsSep2 = sortCardType(computerCards,weapons,compWeaponsSep);
-var compPlayWeapons = stripOutSolution(weapons, compWeaponsSep);
+compPlayWeapons = stripOutSolution(weapons, compWeaponsSep);
 var compRoomsSep = [];
 var compRoomsSep2 = sortCardType(computerCards,rooms,compRoomsSep);
-var compPlayRooms = stripOutSolution(rooms, compRoomsSep);
+compPlayRooms = stripOutSolution(rooms, compRoomsSep);
+}
 
+mainLoop();
 //Test Card Hands
 //console.log('Player Cards: ' + playerCards);
 //console.log('Computer Cards: ' + computerCards);
